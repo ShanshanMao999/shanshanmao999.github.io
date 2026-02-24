@@ -100,7 +100,7 @@
       border-radius: 24px;
       background:
         linear-gradient(135deg, rgba(107,138,255,0.3), rgba(34,211,238,0.2)),
-        url("assets/avatar.jpg") center/cover no-repeat;
+        url("./assets/avatar.jpg") center/cover no-repeat;
       border: 1px solid rgba(255,255,255,0.08);
       box-shadow: 0 16px 48px rgba(0,0,0,0.5);
     }
@@ -361,7 +361,7 @@
             <span class="pill">Game Theory</span>
           </div>
           <div class="links">
-            <a class="btn" href="assets/cv.pdf" target="_blank" rel="noopener">
+            <a class="btn" href="./assets/cv.pdf" target="_blank" rel="noopener">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
               CV
             </a>
@@ -373,7 +373,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
               GitHub
             </a>
-            <a class="btn" href="mailto:shanshanmao5233@gmail.com">
+            <a class="btn" href="/cdn-cgi/l/email-protection#fe8d969f908d969f90939f91cbcccdcdbe99939f9792d09d9193">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
               Email
             </a>
@@ -419,7 +419,13 @@
           </div>
         </div>
 
-        
+        <div class="research-item">
+          <div class="ri-title">Evolvable Deception &amp; Hierarchy Collapse</div>
+          <div class="ri-desc">Agents evolve lying probability and magnitude; credibility feedback and detection mechanisms determine whether hierarchy survives or collapses.</div>
+          <div class="tags">
+            <span class="tag">Deception</span><span class="tag">Evolution</span><span class="tag">Credibility</span><span class="tag">Nash Equilibrium</span>
+          </div>
+        </div>
 
         <div class="research-item">
           <div class="ri-title">Reproducible Measurement Framework</div>
@@ -443,7 +449,15 @@
           </div>
         </div>
 
-        
+        <div class="pub-item">
+          <div class="pub-title">Nash Equilibrium and Deception Mechanisms in Multi-Agent Systems: A Game-Theoretic Approach</div>
+          <span class="pub-status">in progress — targeting ALife 2026</span>
+        </div>
+
+        <div class="pub-item">
+          <div class="pub-title">Evolvable Deception and the Collapse of Social Hierarchies in a Multi-Agent System</div>
+          <span class="pub-status">in progress — preprint forthcoming</span>
+        </div>
 
         <div class="divider"></div>
 
@@ -576,13 +590,13 @@
       <div class="card full-width">
         <div class="card-label">Contact</div>
         <div class="contact-grid">
-          <a class="contact-item" href="mailto:shanshanmao5233@gmail.com">
+          <a class="contact-item" href="/cdn-cgi/l/email-protection#99eaf1f8f7eaf1f8f7f4f8f6acabaaaad9fef4f8f0f5b7faf6f4">
             <div class="ci-label">Email</div>
-            <div class="ci-value">shanshanmao5233@gmail.com</div>
+            <div class="ci-value"><span class="__cf_email__" data-cfemail="77041f1619041f16191a16184245444437101a161e1b5914181a">[email&#160;protected]</span></div>
           </a>
-          <a class="contact-item" href="mailto:sxm1550@student.bham.ac.uk">
+          <a class="contact-item" href="/cdn-cgi/l/email-protection#e7949f8ad6d2d2d7a794939283828993c9858f868ac98684c9928c">
             <div class="ci-label">University</div>
-            <div class="ci-value">sxm1550@student.bham.ac.uk</div>
+            <div class="ci-value"><span class="__cf_email__" data-cfemail="f98a8194c8ccccc9b98a8d8c9d9c978dd79b919894d7989ad78c92">[email&#160;protected]</span></div>
           </a>
           <div class="contact-item">
             <div class="ci-label">Location</div>
@@ -611,7 +625,7 @@
        • Signal dots animate along directed edges
        • Hierarchy clusters emerge and dissolve organically
   ═══════════════════════════════════════════════════ -->
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   (() => {
     const canvas = document.getElementById('simCanvas');
     const ctx = canvas.getContext('2d');
@@ -829,22 +843,3 @@
     }
 
     init();
-    requestAnimationFrame(draw);
-
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        resize();
-        for (const a of agents) {
-          a.x = Math.min(a.x, W);
-          a.y = Math.min(a.y, H);
-        }
-      }, 100);
-    });
-  })();
-  </script>
-
-  <script>document.getElementById("y").textContent = new Date().getFullYear();</script>
-</body>
-</html>
