@@ -95,15 +95,36 @@
       .pills { justify-content: center; }
     }
 
-    .avatar {
-      width: 140px; height: 140px;
-      border-radius: 24px;
-      background:
-        linear-gradient(135deg, rgba(107,138,255,0.3), rgba(34,211,238,0.2)),
-        url("./assets/avatar.jpg") center/cover no-repeat;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
-    }
+    .avatar-wrap{
+  width: 140px;
+  height: 140px;
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;                 /* 关键：裁切不溢出 */
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.50);
+  flex: 0 0 auto;                   /* 如果你是 flex，锁死不被挤压 */
+}
+
+/* 头像本体：永远铺满 + cover */
+.avatar-img{
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;                /* 关键：不变形，自动裁切 */
+  object-position: 50% 20%;         /* 关键：把脸往上提一点（你这张图更合适） */
+  transform: scale(1.06);           /* 轻微放大，避免边缘露空 */
+}
+
+/* 霓虹玻璃感的叠加层（贴合你页面风格） */
+.avatar-wrap::after{
+  content:"";
+  position:absolute; inset:0;
+  background: linear-gradient(135deg, rgba(107,138,255,0.28), rgba(34,211,238,0.16));
+  mix-blend-mode: screen;           /* 更“贴合”背景 */
+  opacity: 0.55;
+  pointer-events:none;
+}
 
     .hero-content h1 {
       font-family: var(--serif);
@@ -346,7 +367,9 @@
       <div class="hero-veil"></div>
 
       <div class="hero-inner">
-        <div class="avatar" aria-label="Shanshan Mao avatar"></div>
+        <div class="avatar-wrap" aria-label="Shanshan Mao avatar">
+            <img class="avatar-img" src="assets/avatar.jpg" alt="Shanshan Mao" loading="lazy">
+        </div>
         <div class="hero-content">
           <h1>Shanshan Mao</h1>
           <p class="hero-subtitle">
