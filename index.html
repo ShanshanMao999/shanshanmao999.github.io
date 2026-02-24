@@ -5,305 +5,860 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Shanshan Mao · Multi-Agent Systems · Hierarchy & Deception</title>
   <meta name="description" content="PhD researcher in Multi-Agent Systems, hierarchy emergence, trophic incoherence, evolvable deception, ABM simulations." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --bg:#070A12; --panel:#0B1020cc; --card:#0F1733cc;
-      --text:#EAF0FF; --muted:#A9B6E6; --accent:#7C5CFF; --accent2:#00E5FF;
-      --line:#22306b55;
-      --shadow: 0 20px 60px rgba(0,0,0,.45);
-      --radius: 18px;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    :root {
+      --bg: #06080f;
+      --surface: rgba(14, 18, 32, 0.85);
+      --card: rgba(16, 22, 42, 0.72);
+      --border: rgba(120, 140, 200, 0.08);
+      --border-hover: rgba(120, 160, 255, 0.18);
+      --text: #e4eaf8;
+      --text-secondary: #8e9cc0;
+      --accent: #6b8aff;
+      --accent-warm: #c084fc;
+      --accent-cyan: #22d3ee;
+      --serif: 'Instrument Serif', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --radius: 20px;
+      --radius-sm: 12px;
     }
-    *{box-sizing:border-box}
-    body{
-      margin:0; font-family:var(--sans); color:var(--text);
-      background:
-        radial-gradient(900px 600px at 15% 20%, rgba(124,92,255,.35), transparent 60%),
-        radial-gradient(800px 600px at 80% 10%, rgba(0,229,255,.25), transparent 55%),
-        radial-gradient(900px 600px at 65% 80%, rgba(255,82,130,.18), transparent 60%),
-        linear-gradient(180deg, #050713 0%, #070A12 100%);
-      min-height:100vh;
-      overflow-x:hidden;
-    }
-    .wrap{max-width:1100px;margin:0 auto;padding:28px 18px 70px}
-    .hero{
-      position:relative; border:1px solid var(--line); border-radius:var(--radius);
-      background:linear-gradient(180deg, rgba(18,25,55,.8) 0%, rgba(8,10,18,.6) 100%);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-    .banner{
-  height:220px;
-  position:absolute;
-  inset:0 0 auto 0;   /* 顶部贴住，只占上方 220px */
-  z-index:0;
-  background: url("assets/banner.png") center/cover no-repeat;
-  filter:saturate(1.05);
-}
 
-/* 压暗层（让截图退到背景） */
-.banner::before{
-  content:"";
-  position:absolute; inset:0;
-  background: rgba(0,0,0,.70);
-  opacity:0.55;
-}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* 霓虹融合层（贴合你的主题） */
-.banner::after{
-  content:"";
-  position:absolute; inset:0;
-  background:
-    radial-gradient(700px 300px at 30% 30%, rgba(124,92,255,.40), transparent 60%),
-    radial-gradient(700px 300px at 70% 30%, rgba(0,229,255,.30), transparent 60%),
-    linear-gradient(180deg, rgba(7,10,18,.05), rgba(7,10,18,.95));
-  opacity:0.75;
-}
-    .heroInner{display:flex; gap:18px; padding:18px 18px 22px}
-    .avatar{
-      width:118px;height:118px;border-radius:22px; flex:0 0 auto;
-      border:1px solid rgba(255,255,255,.12);
+    body {
+      font-family: var(--sans);
+      color: var(--text);
+      background: var(--bg);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    .ambient {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
       background:
-        url("assets/avatar.jpg") center/cover no-repeat,
-        linear-gradient(135deg, rgba(124,92,255,.35), rgba(0,229,255,.25));
-      box-shadow:0 12px 40px rgba(0,0,0,.35);
-      margin-top:-64px;
+        radial-gradient(ellipse 900px 500px at 10% 15%, rgba(107,138,255,0.10), transparent 60%),
+        radial-gradient(ellipse 700px 500px at 85% 8%, rgba(34,211,238,0.06), transparent 55%),
+        radial-gradient(ellipse 600px 400px at 50% 85%, rgba(192,132,252,0.05), transparent 55%);
     }
-    h1{margin:0;font-size:28px;letter-spacing:.2px}
-    .subtitle{margin:8px 0 0;color:var(--muted);line-height:1.5}
-    .pillRow{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-    .pill{
-      padding:8px 10px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(15,23,51,.55);
-      font-size:13px;color:#dbe3ff
+
+    .page {
+      position: relative; z-index: 1;
+      max-width: 1080px; margin: 0 auto;
+      padding: 48px 24px 80px;
     }
-    .links{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-    .btn{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:10px 12px;border-radius:14px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(15,23,51,.55);
-      color:var(--text); text-decoration:none;
-      transition:transform .08s ease, border-color .2s ease;
-      font-weight:600; font-size:14px;
+
+    /* ═══ HERO ═══ */
+    .hero {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(8,12,24,0.92) 0%, rgba(10,14,28,0.96) 100%);
+      overflow: hidden;
+      animation: fadeUp 0.6s ease both;
     }
-    .btn:hover{transform:translateY(-1px);border-color:rgba(124,92,255,.55)}
-    .btn .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2))}
-    .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;margin-top:16px}
-    @media (max-width:900px){.grid{grid-template-columns:1fr}.avatar{margin-top:-58px}}
-    .card{
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      background:rgba(11,16,32,.62);
-      box-shadow:0 16px 50px rgba(0,0,0,.35);
-      padding:16px 16px 14px;
+
+    #simCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      opacity: 0.55;
     }
-    .card h2{
-      margin:0 0 10px;font-size:16px;letter-spacing:.35px;
-      text-transform:uppercase;color:#c9d3ff
+
+    .hero-veil {
+      position: absolute; inset: 0; z-index: 1;
+      background:
+        linear-gradient(180deg,
+          rgba(6,8,15,0.10) 0%,
+          rgba(6,8,15,0.30) 40%,
+          rgba(6,8,15,0.70) 100%);
+      pointer-events: none;
     }
-    .card p{margin:0;color:var(--muted);line-height:1.55}
-    .list{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:10px}
-    .item{
-      padding:12px;border-radius:16px;border:1px solid rgba(255,255,255,.10);
-      background:rgba(15,23,51,.45)
+
+    .hero-inner {
+      position: relative; z-index: 2;
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 32px;
+      align-items: start;
+      padding: 44px 40px 40px;
     }
-    .item .title{font-weight:700}
-    .item .meta{margin-top:6px;color:var(--muted);font-size:13px;line-height:1.45}
-    .tagRow{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-    .tag{
-      font-family:var(--mono);
-      font-size:12px;
-      padding:6px 8px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(124,92,255,.10);
-      color:#dfe6ff
+    @media (max-width: 680px) {
+      .hero-inner { grid-template-columns: 1fr; text-align: center; padding: 36px 24px 32px; }
+      .avatar { margin: 0 auto; }
+      .links { justify-content: center; }
+      .pills { justify-content: center; }
     }
-    .footer{
-      margin-top:18px;color:rgba(233,240,255,.65);
-      font-size:13px;text-align:center
+
+    .avatar {
+      width: 140px; height: 140px;
+      border-radius: 24px;
+      background:
+        linear-gradient(135deg, rgba(107,138,255,0.3), rgba(34,211,238,0.2)),
+        url("assets/avatar.jpg") center/cover no-repeat;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
     }
-    .mini{
-      display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; align-items:center
+
+    .hero-content h1 {
+      font-family: var(--serif);
+      font-size: clamp(32px, 5vw, 44px);
+      font-weight: 400;
+      letter-spacing: -0.5px;
+      line-height: 1.15;
+      background: linear-gradient(135deg, #fff 30%, var(--accent) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-    .kpi{
-      padding:10px 12px;border-radius:16px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(15,23,51,.45);
-      min-width:180px
+
+    .hero-subtitle {
+      margin-top: 10px;
+      color: var(--text-secondary);
+      font-size: 15px;
+      line-height: 1.65;
+      max-width: 560px;
     }
-    .kpi .k{font-size:12px;color:rgba(233,240,255,.70);text-transform:uppercase;letter-spacing:.3px}
-    .kpi .v{margin-top:6px;font-weight:800;font-size:16px}
-    .sep{height:1px;background:rgba(255,255,255,.08);margin:12px 0}
-    .pub a{color:#dfe6ff;text-decoration:none;border-bottom:1px dashed rgba(223,230,255,.35)}
-    .pub a:hover{border-bottom-color:rgba(0,229,255,.65)}
+
+    .pills {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px;
+    }
+    .pill {
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.07);
+      background: rgba(107,138,255,0.08);
+      font-size: 12.5px;
+      font-family: var(--mono);
+      color: #b4c4f0;
+      letter-spacing: 0.2px;
+      backdrop-filter: blur(6px);
+    }
+
+    .links {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(15,20,40,0.55);
+      backdrop-filter: blur(8px);
+      color: var(--text); text-decoration: none;
+      font-size: 13.5px; font-weight: 500;
+      transition: all 0.2s ease;
+    }
+    .btn:hover {
+      border-color: var(--border-hover);
+      background: rgba(107,138,255,0.14);
+      transform: translateY(-1px);
+    }
+    .btn svg { width: 16px; height: 16px; opacity: 0.7; }
+
+    .sim-legend {
+      position: absolute;
+      bottom: 12px; right: 16px;
+      z-index: 3;
+      display: flex; gap: 14px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.5px;
+      color: rgba(180,196,240,0.45);
+    }
+    .sim-legend span { display: flex; align-items: center; gap: 5px; }
+    .sim-legend .dot { width: 6px; height: 6px; border-radius: 50%; }
+    @media(max-width:600px){ .sim-legend{display:none} }
+
+    /* ═══ Grid ═══ */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+    @media (max-width: 780px) { .grid { grid-template-columns: 1fr; } }
+
+    .full-width { grid-column: 1 / -1; }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      backdrop-filter: blur(16px);
+      padding: 28px;
+      animation: fadeUp 0.6s ease both;
+    }
+    .card:nth-child(1) { animation-delay: 0.08s; }
+    .card:nth-child(2) { animation-delay: 0.14s; }
+    .card:nth-child(3) { animation-delay: 0.20s; }
+    .card:nth-child(4) { animation-delay: 0.26s; }
+
+    .card-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .card h3 {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 400;
+      color: #f0f4ff;
+      margin-bottom: 10px;
+    }
+    .card p {
+      color: var(--text-secondary);
+      font-size: 14.5px;
+      line-height: 1.65;
+    }
+
+    .research-item {
+      padding: 18px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(107,138,255,0.03);
+      margin-bottom: 12px;
+      transition: border-color 0.2s;
+    }
+    .research-item:last-child { margin-bottom: 0; }
+    .research-item:hover { border-color: var(--border-hover); }
+    .research-item .ri-title { font-weight: 600; font-size: 14.5px; color: #dce4ff; margin-bottom: 6px; }
+    .research-item .ri-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.55; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .tag {
+      font-family: var(--mono); font-size: 11px;
+      padding: 4px 10px; border-radius: 999px;
+      border: 1px solid rgba(107,138,255,0.12);
+      background: rgba(107,138,255,0.06); color: #a0b4e8;
+    }
+
+    .pub-item {
+      padding: 18px; border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(107,138,255,0.03);
+      margin-bottom: 12px;
+    }
+    .pub-item:last-child { margin-bottom: 0; }
+    .pub-item .pub-title { font-size: 14.5px; font-weight: 600; color: #dce4ff; line-height: 1.5; margin-bottom: 6px; }
+    .pub-venue { font-size: 13px; color: var(--accent-warm); font-weight: 500; margin-bottom: 4px; }
+    .pub-links { margin-top: 8px; display: flex; gap: 10px; }
+    .pub-links a {
+      font-size: 12.5px; color: var(--accent-cyan); text-decoration: none;
+      border-bottom: 1px dashed rgba(34,211,238,0.3); transition: border-color 0.2s;
+    }
+    .pub-links a:hover { border-bottom-color: var(--accent-cyan); }
+    .pub-status {
+      display: inline-block; font-family: var(--mono); font-size: 11px;
+      padding: 3px 10px; border-radius: 999px;
+      background: rgba(192,132,252,0.1); border: 1px solid rgba(192,132,252,0.15);
+      color: var(--accent-warm);
+    }
+
+    .kpi-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+    .kpi {
+      flex: 1; min-width: 160px; padding: 16px;
+      border-radius: 16px; border: 1px solid var(--border);
+      background: rgba(107,138,255,0.03);
+    }
+    .kpi-label {
+      font-family: var(--mono); font-size: 10.5px;
+      text-transform: uppercase; letter-spacing: 1px;
+      color: var(--text-secondary); margin-bottom: 8px;
+    }
+    .kpi-value { font-family: var(--serif); font-size: 17px; color: #f0f4ff; }
+
+    .timeline-item {
+      position: relative; padding-left: 20px; padding-bottom: 20px;
+      border-left: 1px solid rgba(107,138,255,0.12);
+    }
+    .timeline-item:last-child { padding-bottom: 0; border-left-color: transparent; }
+    .timeline-item::before {
+      content: ''; position: absolute; left: -4px; top: 6px;
+      width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+    }
+    .tl-date { font-family: var(--mono); font-size: 12px; color: var(--accent); margin-bottom: 4px; }
+    .tl-title { font-weight: 600; font-size: 14.5px; color: #dce4ff; }
+    .tl-sub { font-size: 13.5px; color: var(--text-secondary); margin-top: 2px; }
+
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .skill-group {
+      padding: 16px; border-radius: 16px;
+      border: 1px solid var(--border); background: rgba(107,138,255,0.03);
+    }
+    .skill-group-label {
+      font-family: var(--mono); font-size: 10.5px;
+      text-transform: uppercase; letter-spacing: 1px;
+      color: var(--accent); margin-bottom: 10px;
+    }
+    .skill-group-items { display: flex; flex-wrap: wrap; gap: 6px; }
+    .skill-tag { font-size: 12.5px; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,0.04); color: #b4c4f0; }
+
+    .teach-item {
+      padding: 14px 18px; border-radius: 16px;
+      border: 1px solid var(--border); background: rgba(107,138,255,0.03);
+      margin-bottom: 10px;
+    }
+    .teach-item:last-child { margin-bottom: 0; }
+    .teach-role { font-weight: 600; font-size: 14px; color: #dce4ff; }
+    .teach-detail { font-size: 13px; color: var(--text-secondary); margin-top: 4px; line-height: 1.55; }
+
+    .contact-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+    .contact-item {
+      flex: 1; min-width: 200px; padding: 16px;
+      border-radius: 16px; border: 1px solid var(--border);
+      background: rgba(107,138,255,0.03); text-decoration: none;
+      transition: border-color 0.2s;
+    }
+    .contact-item:hover { border-color: var(--border-hover); }
+    .ci-label {
+      font-family: var(--mono); font-size: 10.5px;
+      text-transform: uppercase; letter-spacing: 1px;
+      color: var(--text-secondary); margin-bottom: 6px;
+    }
+    .ci-value { font-size: 14px; color: #dce4ff; word-break: break-all; }
+
+    .footer { margin-top: 40px; text-align: center; color: rgba(142,156,192,0.5); font-size: 12.5px; }
+    .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 20px 0; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
+  <div class="ambient"></div>
 
+  <div class="page">
+
+    <!-- ═══ HERO ═══ -->
     <section class="hero">
-      <div class="banner"></div>
+      <canvas id="simCanvas"></canvas>
+      <div class="hero-veil"></div>
 
-      <div class="heroInner">
-        <div class="avatar" aria-label="avatar"></div>
-
-        <div>
+      <div class="hero-inner">
+        <div class="avatar" aria-label="Shanshan Mao avatar"></div>
+        <div class="hero-content">
           <h1>Shanshan Mao</h1>
-          <div class="subtitle">
-            PhD Researcher · Multi-Agent Systems (ABM) · Hierarchy Emergence · Trophic Incoherence · Evolvable Deception
-            <br/>
-            University of Birmingham (School of Computer Science)
+          <p class="hero-subtitle">
+            PhD Researcher in Computer Science at the <strong style="color:#dce4ff">University of Birmingham</strong>. I study how social hierarchies spontaneously emerge, stabilise, and collapse in multi-agent systems — through cooperation, deception, and self-organisation.
+          </p>
+          <div class="pills">
+            <span class="pill">Agent-Based Modelling</span>
+            <span class="pill">Self-Organisation</span>
+            <span class="pill">Hierarchy Dynamics</span>
+            <span class="pill">Trophic Incoherence</span>
+            <span class="pill">Deception &amp; Credibility</span>
+            <span class="pill">Game Theory</span>
           </div>
-
-          <div class="pillRow">
-            <div class="pill">Agent-Based Modelling</div>
-            <div class="pill">Self-Organisation</div>
-            <div class="pill">Hierarchy Dynamics</div>
-            <div class="pill">Reputation / Credibility</div>
-            <div class="pill">Deception & Collapse</div>
-          </div>
-
           <div class="links">
             <a class="btn" href="assets/cv.pdf" target="_blank" rel="noopener">
-              <span class="dot"></span> CV (PDF)
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              CV
             </a>
             <a class="btn" href="https://scholar.google.com/" target="_blank" rel="noopener">
-              <span class="dot"></span> Google Scholar
-            </a>
-            <a class="btn" href="https://arxiv.org/" target="_blank" rel="noopener">
-              <span class="dot"></span> arXiv
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+              Scholar
             </a>
             <a class="btn" href="https://github.com/" target="_blank" rel="noopener">
-              <span class="dot"></span> GitHub
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+              GitHub
             </a>
-            <a class="btn" href="mailto:your.email@domain.com">
-              <span class="dot"></span> Email
+            <a class="btn" href="mailto:shanshanmao5233@gmail.com">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Email
             </a>
           </div>
-
         </div>
+      </div>
+
+      <div class="sim-legend">
+        <span><span class="dot" style="background:#6b8aff"></span> LEADER</span>
+        <span><span class="dot" style="background:#22d3ee"></span> AGENT</span>
+        <span><span class="dot" style="background:#f472b6"></span> DECEIVER</span>
+        <span style="opacity:0.6">LIVE SIMULATION</span>
       </div>
     </section>
 
-    <section class="grid">
+    <!-- ═══ MAIN GRID ═══ -->
+    <div class="grid">
+
+      <!-- Research -->
       <div class="card">
-        <h2>Research</h2>
-        <p>
-          I build multi-agent simulations to study how social hierarchies emerge, collapse, and rebuild under
-          cooperation, ability heterogeneity, and information manipulation. I quantify hierarchy order using
-          <b>Trophic Incoherence</b> and track dynamic interaction networks (speaker→listener) during collective tasks.
+        <div class="card-label">Research</div>
+        <h3>Hierarchy in Multi-Agent Systems</h3>
+        <p style="margin-bottom:18px">
+          I build simulations to understand how coordinated social structures emerge from local interactions alone. Using speaker–listener dynamics and endorsement networks, I trace how cooperation breeds hierarchy — and how deception can tear it apart.
         </p>
 
-        <div class="sep"></div>
-
-        <div class="mini">
+        <div class="kpi-row">
           <div class="kpi">
-            <div class="k">Core theme</div>
-            <div class="v">From cooperation → hierarchy</div>
+            <div class="kpi-label">Core Question</div>
+            <div class="kpi-value">Cooperation → Hierarchy</div>
           </div>
           <div class="kpi">
-            <div class="k">Phase-2 focus</div>
-            <div class="v">Evolvable deception & collapse</div>
-          </div>
-          <div class="kpi">
-            <div class="k">Metric</div>
-            <div class="v">Trophic Incoherence (TI)</div>
+            <div class="kpi-label">Key Metric</div>
+            <div class="kpi-value">Trophic Incoherence</div>
           </div>
         </div>
 
-        <div class="sep"></div>
+        <div class="research-item">
+          <div class="ri-title">Hierarchy Emergence under Minimal Heterogeneity</div>
+          <div class="ri-desc">Distributed agents with local reinforcement learning converge on stable, ordered interaction networks — measured via trophic incoherence.</div>
+          <div class="tags">
+            <span class="tag">ABM</span><span class="tag">TI</span><span class="tag">Self-Organisation</span><span class="tag">Python</span>
+          </div>
+        </div>
 
-        <ul class="list">
-          <li class="item">
-            <div class="title">Hierarchy Emergence under Minimal Heterogeneity</div>
-            <div class="meta">ABM + distributed coordination + reinforcement → stable ordered interaction graphs.</div>
-            <div class="tagRow">
-              <span class="tag">ABM</span><span class="tag">TI</span><span class="tag">Self-Organisation</span>
-            </div>
-          </li>
+        <div class="research-item">
+          <div class="ri-title">Evolvable Deception &amp; Hierarchy Collapse</div>
+          <div class="ri-desc">Agents evolve lying probability and magnitude; credibility feedback and detection mechanisms determine whether hierarchy survives or collapses.</div>
+          <div class="tags">
+            <span class="tag">Deception</span><span class="tag">Evolution</span><span class="tag">Credibility</span><span class="tag">Nash Equilibrium</span>
+          </div>
+        </div>
 
-          <li class="item">
-            <div class="title">Evolvable Deception & Hierarchy Collapse</div>
-            <div class="meta">Agents evolve lying probability/magnitude; detection/credibility feedback shapes stability.</div>
-            <div class="tagRow">
-              <span class="tag">Deception</span><span class="tag">Evolution</span><span class="tag">Credibility</span>
-            </div>
-          </li>
-
-          <li class="item">
-            <div class="title">Measurement & Diagnostics</div>
-            <div class="meta">Network logging, robustness checks, seed sweeps, and reproducible pipelines.</div>
-            <div class="tagRow">
-              <span class="tag">Reproducibility</span><span class="tag">Diagnostics</span><span class="tag">Python/JS</span>
-            </div>
-          </li>
-        </ul>
+        <div class="research-item">
+          <div class="ri-title">Reproducible Measurement Framework</div>
+          <div class="ri-desc">Full-pipeline tooling: network logging, seed sweeps, robustness checks, heatmaps, and automated statistical analysis.</div>
+          <div class="tags">
+            <span class="tag">Reproducibility</span><span class="tag">Diagnostics</span><span class="tag">Batch Experiments</span>
+          </div>
+        </div>
       </div>
 
+      <!-- Publications & Projects -->
       <div class="card">
-        <h2>Selected Publications</h2>
+        <div class="card-label">Publications</div>
 
-        <ul class="list pub">
-          <li class="item">
-            <div class="title">
-              From Cooperation to Hierarchy: Investigating the Minimal Conditions for Emergent Social Structures in Multi-Agent Systems
-            </div>
-            <div class="meta">
-              <b>EvoApplications 2026 (LNCS)</b> ·
-              <a href="#" target="_blank" rel="noopener">paper</a> ·
-              <a href="#" target="_blank" rel="noopener">code</a>
-            </div>
-          </li>
+        <div class="pub-item">
+          <div class="pub-title">From Cooperation to Hierarchy: A Study of Dynamics of Hierarchy Emergence in a Multi-Agent System</div>
+          <div class="pub-venue">EvoStar 2026 (Accepted)</div>
+          <div class="pub-links">
+            <a href="#">paper</a>
+            <a href="#">code</a>
+          </div>
+        </div>
 
-          <li class="item">
-            <div class="title">Evolvable Deception and the Collapse of Social Hierarchies in a Multi-Agent System</div>
-            <div class="meta">
-              (in progress) · <a href="#" target="_blank" rel="noopener">preprint</a>
-            </div>
-          </li>
-        </ul>
+        <div class="pub-item">
+          <div class="pub-title">Nash Equilibrium and Deception Mechanisms in Multi-Agent Systems: A Game-Theoretic Approach</div>
+          <span class="pub-status">in progress — targeting ALife 2026</span>
+        </div>
 
-        <div class="sep"></div>
+        <div class="pub-item">
+          <div class="pub-title">Evolvable Deception and the Collapse of Social Hierarchies in a Multi-Agent System</div>
+          <span class="pub-status">in progress — preprint forthcoming</span>
+        </div>
 
-        <h2>Projects</h2>
-        <ul class="list">
-          <li class="item">
-            <div class="title">MAS Simulator</div>
-            <div class="meta">Interactive simulation + batch experiments + TI monitoring.</div>
-          </li>
-          <li class="item">
-            <div class="title">Deception Module</div>
-            <div class="meta">Evolving lying traits (p, m), detection, and credibility/endorsement signals.</div>
-          </li>
-          <li class="item">
-            <div class="title">Analysis Toolkit</div>
-            <div class="meta">Seed sweeps, curves, heatmaps, robustness statistics, reproducible outputs.</div>
-          </li>
-        </ul>
+        <div class="divider"></div>
 
-        <div class="sep"></div>
+        <div class="card-label">Projects</div>
 
-        <h2>Contact</h2>
-        <p>
-          Email: <b>your.email@domain.com</b><br/>
-          Location: Birmingham / Europe<br/>
-          GitHub: <b>@your-handle</b>
-        </p>
+        <div class="research-item">
+          <div class="ri-title">MAS Simulator</div>
+          <div class="ri-desc">Real-time interactive simulation with batch experiment mode and live trophic incoherence monitoring.</div>
+        </div>
+
+        <div class="research-item">
+          <div class="ri-title">Deception Module</div>
+          <div class="ri-desc">Evolutionary framework for lying traits (probability, magnitude), detection thresholds, and credibility-endorsement signals.</div>
+        </div>
+
+        <div class="research-item">
+          <div class="ri-title">Analysis Toolkit</div>
+          <div class="ri-desc">Seed sweeps, convergence curves, heatmaps, statistical robustness tests, and fully reproducible outputs.</div>
+        </div>
       </div>
-    </section>
+
+      <!-- Education -->
+      <div class="card">
+        <div class="card-label">Education</div>
+
+        <div class="timeline-item">
+          <div class="tl-date">Mar 2021 – Present</div>
+          <div class="tl-title">PhD in Computer Science</div>
+          <div class="tl-sub">University of Birmingham, UK — Multi-Agent Systems &amp; Hierarchy Emergence</div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="tl-date">Sept 2019 – Sept 2020</div>
+          <div class="tl-title">MSc in Advanced Computer Science</div>
+          <div class="tl-sub">University of Birmingham, UK — Distinction</div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="tl-date">Sept 2014 – Jun 2018</div>
+          <div class="tl-title">BSc in Computer Science &amp; Technology</div>
+          <div class="tl-sub">Henan University, China — 80.5 / 100</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="card-label">Teaching</div>
+
+        <div class="teach-item">
+          <div class="teach-role">Postgraduate Teaching Assistant</div>
+          <div class="teach-detail">UoB, Sept 2022 – Present. Labs &amp; tutorials for Data Structures, Databases, Programming for Data Science, Evolutionary Computation, AI/ML. HEFi certified.</div>
+        </div>
+        <div class="teach-item">
+          <div class="teach-role">Summer School TA — ML for Mathematics</div>
+          <div class="teach-detail">UoB, Jul 2025. Lab support for scikit-learn, PyTorch, and TensorFlow sessions.</div>
+        </div>
+      </div>
+
+      <!-- Skills & Experience -->
+      <div class="card">
+        <div class="card-label">Technical Skills</div>
+
+        <div class="skills-grid">
+          <div class="skill-group">
+            <div class="skill-group-label">Languages</div>
+            <div class="skill-group-items">
+              <span class="skill-tag">Python</span>
+              <span class="skill-tag">C++</span>
+              <span class="skill-tag">MATLAB</span>
+              <span class="skill-tag">JavaScript</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-group-label">Frameworks</div>
+            <div class="skill-group-items">
+              <span class="skill-tag">PyTorch</span>
+              <span class="skill-tag">scikit-learn</span>
+              <span class="skill-tag">PyGame</span>
+              <span class="skill-tag">TensorFlow</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-group-label">Tools</div>
+            <div class="skill-group-items">
+              <span class="skill-tag">Git</span>
+              <span class="skill-tag">LaTeX</span>
+              <span class="skill-tag">Jupyter</span>
+              <span class="skill-tag">VS Code</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-group-label">Statistics</div>
+            <div class="skill-group-items">
+              <span class="skill-tag">Hypothesis Testing</span>
+              <span class="skill-tag">Regression</span>
+              <span class="skill-tag">Matplotlib</span>
+              <span class="skill-tag">Seaborn</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="card-label">Other Experience</div>
+
+        <div class="teach-item">
+          <div class="teach-role">AI Companion Robotics — Technical Lead</div>
+          <div class="teach-detail">National PhD Innovation Programme, Sept 2023 – Jun 2024. Designed a multimodal AI companion robot with ASR, TTS, gesture sensing, and emotion-aware dialogue for elderly care.</div>
+        </div>
+
+        <div class="teach-item">
+          <div class="teach-role">UI Developer — dSPACE HIL Integration</div>
+          <div class="teach-detail">2018. Built a Python GUI connecting third-party hardware with dSPACE real-time testing systems.</div>
+        </div>
+
+        <div class="teach-item">
+          <div class="teach-role">Front-End Developer — Zhenjiang Commerce Website</div>
+          <div class="teach-detail">2017. Developed responsive front-end with jQuery, HTML, CSS in an agile team environment.</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="card-label">Awards</div>
+        <div class="teach-item">
+          <div class="teach-role">🏆 1st Place — Sustainable Future in the City</div>
+          <div class="teach-detail">Student Competition, Oct 2019. Speech-based e-ticketing solution for green transport.</div>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="card full-width">
+        <div class="card-label">Contact</div>
+        <div class="contact-grid">
+          <a class="contact-item" href="mailto:shanshanmao5233@gmail.com">
+            <div class="ci-label">Email</div>
+            <div class="ci-value">shanshanmao5233@gmail.com</div>
+          </a>
+          <a class="contact-item" href="mailto:sxm1550@student.bham.ac.uk">
+            <div class="ci-label">University</div>
+            <div class="ci-value">sxm1550@student.bham.ac.uk</div>
+          </a>
+          <div class="contact-item">
+            <div class="ci-label">Location</div>
+            <div class="ci-value">Birmingham, UK</div>
+          </div>
+          <a class="contact-item" href="https://github.com/" target="_blank" rel="noopener">
+            <div class="ci-label">GitHub</div>
+            <div class="ci-value">@your-handle</div>
+          </a>
+        </div>
+      </div>
+    </div>
 
     <div class="footer">
-      © <span id="y"></span> Shanshan Mao · Built with GitHub Pages · Minimal JS, fast load.
+      © <span id="y"></span> Shanshan Mao · Built with GitHub Pages
     </div>
 
   </div>
 
+  <!-- ═══════════════════════════════════════════════════
+       MULTI-AGENT HIERARCHY SIMULATION
+       ─────────────────────────────────────────────────
+       • 55 agents wander, form speaker→listener edges
+       • Leaders (high trophic rank) glow blue & enlarge
+       • Deceivers pulse pink; credibility decays over time
+       • Signal dots animate along directed edges
+       • Hierarchy clusters emerge and dissolve organically
+  ═══════════════════════════════════════════════════ -->
   <script>
-    document.getElementById("y").textContent = new Date().getFullYear();
+  (() => {
+    const canvas = document.getElementById('simCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const N            = 55;
+    const DECEIVER_R   = 0.12;
+    const EDGE_MAX     = 100;
+    const LINK_PROB    = 0.014;
+    const LINK_DECAY   = 0.0035;
+    const MAX_SPEED    = 0.38;
+    const LEADER_THR   = 0.72;
+    const ATTRACT_R    = 180;
+    const ATTRACT_F    = 0.00012;
+
+    let W, H, dpr;
+    const agents = [];
+    const edges  = [];
+
+    function resize() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = rect.width; H = rect.height;
+      canvas.width  = W * dpr;
+      canvas.height = H * dpr;
+      canvas.style.width  = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    class Agent {
+      constructor(i) {
+        this.x  = Math.random() * (W || 800);
+        this.y  = Math.random() * (H || 400);
+        this.vx = (Math.random() - 0.5) * MAX_SPEED;
+        this.vy = (Math.random() - 0.5) * MAX_SPEED;
+        this.rank = Math.random();
+        this.isDeceiver = i < N * DECEIVER_R;
+        this.cred = this.isDeceiver ? 0.25 + Math.random() * 0.4 : 0.55 + Math.random() * 0.45;
+        this.phase = Math.random() * Math.PI * 2;
+        this.inEdges = 0;
+      }
+      update(t) {
+        this.vx += (Math.random() - 0.5) * 0.035;
+        this.vy += (Math.random() - 0.5) * 0.035;
+        const sp = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+        if (sp > MAX_SPEED) { this.vx *= MAX_SPEED / sp; this.vy *= MAX_SPEED / sp; }
+        this.x += this.vx;
+        this.y += this.vy;
+        const margin = 8;
+        if (this.x < margin)  { this.x = margin;  this.vx = Math.abs(this.vx) * 0.6; }
+        if (this.x > W - margin) { this.x = W - margin; this.vx = -Math.abs(this.vx) * 0.6; }
+        if (this.y < margin)  { this.y = margin;  this.vy = Math.abs(this.vy) * 0.6; }
+        if (this.y > H - margin) { this.y = H - margin; this.vy = -Math.abs(this.vy) * 0.6; }
+
+        this.rank += (Math.random() - 0.5) * 0.002;
+        this.rank = Math.max(0.05, Math.min(0.98, this.rank));
+        if (this.isDeceiver) this.cred = Math.max(0.04, this.cred * 0.9997);
+        this.phase = t * 0.0018 + this.rank * 5;
+      }
+    }
+
+    class Edge {
+      constructor(a, b) {
+        this.a = a; this.b = b;
+        this.alpha = 0.45 + Math.random() * 0.35;
+        this.prog  = Math.random();
+      }
+    }
+
+    function dist(a, b) {
+      const dx = a.x - b.x, dy = a.y - b.y;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function init() {
+      resize();
+      agents.length = 0; edges.length = 0;
+      for (let i = 0; i < N; i++) agents.push(new Agent(i));
+    }
+
+    function draw(t) {
+      ctx.clearRect(0, 0, W, H);
+
+      // ── attract nearby agents slightly toward leaders ──
+      for (const a of agents) {
+        if (a.rank < LEADER_THR) continue;
+        for (const b of agents) {
+          if (a === b) continue;
+          const d = dist(a, b);
+          if (d < ATTRACT_R && d > 10) {
+            const f = ATTRACT_F * (ATTRACT_R - d);
+            b.vx += (a.x - b.x) / d * f;
+            b.vy += (a.y - b.y) / d * f;
+          }
+        }
+      }
+
+      for (const a of agents) { a.update(t); a.inEdges = 0; }
+
+      // ── spawn edges ──
+      if (edges.length < EDGE_MAX) {
+        for (let k = 0; k < 2; k++) {
+          if (Math.random() > LINK_PROB * N) continue;
+          const i = Math.floor(Math.random() * N);
+          const j = Math.floor(Math.random() * N);
+          if (i !== j && dist(agents[i], agents[j]) < 200) {
+            // higher-rank agent is speaker (a → b)
+            const [a, b] = agents[i].rank > agents[j].rank
+              ? [agents[i], agents[j]]
+              : [agents[j], agents[i]];
+            edges.push(new Edge(a, b));
+          }
+        }
+      }
+
+      // ── draw & decay edges ──
+      for (let k = edges.length - 1; k >= 0; k--) {
+        const e = edges[k];
+        e.alpha -= LINK_DECAY;
+        e.prog  += 0.012;
+        if (e.prog > 1) e.prog -= 1;
+        if (e.alpha <= 0) { edges.splice(k, 1); continue; }
+
+        e.b.inEdges++;
+
+        const ax = e.a.x, ay = e.a.y, bx = e.b.x, by = e.b.y;
+        const isDec = e.a.isDeceiver || e.b.isDeceiver;
+
+        // edge line
+        ctx.beginPath();
+        ctx.moveTo(ax, ay); ctx.lineTo(bx, by);
+        ctx.strokeStyle = isDec
+          ? `rgba(244,114,182,${e.alpha * 0.22})`
+          : `rgba(107,138,255,${e.alpha * 0.25})`;
+        ctx.lineWidth = 0.7;
+        ctx.stroke();
+
+        // signal dot
+        const px = ax + (bx - ax) * e.prog;
+        const py = ay + (by - ay) * e.prog;
+        ctx.beginPath();
+        ctx.arc(px, py, 1.4, 0, Math.PI * 2);
+        ctx.fillStyle = isDec
+          ? `rgba(244,114,182,${e.alpha * 0.55})`
+          : `rgba(107,138,255,${e.alpha * 0.55})`;
+        ctx.fill();
+
+        // small arrowhead at 70% along edge
+        if (e.alpha > 0.15) {
+          const ap = 0.7;
+          const mx = ax + (bx - ax) * ap;
+          const my = ay + (by - ay) * ap;
+          const angle = Math.atan2(by - ay, bx - ax);
+          const sz = 4;
+          ctx.beginPath();
+          ctx.moveTo(mx + Math.cos(angle) * sz, my + Math.sin(angle) * sz);
+          ctx.lineTo(mx + Math.cos(angle + 2.5) * sz, my + Math.sin(angle + 2.5) * sz);
+          ctx.lineTo(mx + Math.cos(angle - 2.5) * sz, my + Math.sin(angle - 2.5) * sz);
+          ctx.closePath();
+          ctx.fillStyle = isDec
+            ? `rgba(244,114,182,${e.alpha * 0.25})`
+            : `rgba(107,138,255,${e.alpha * 0.25})`;
+          ctx.fill();
+        }
+      }
+
+      // ── draw agents ──
+      for (const a of agents) {
+        const isLeader = a.rank > LEADER_THR;
+        const baseR = isLeader ? 4.8 : 1.8 + a.rank * 1.5;
+        const r = baseR + (a.isDeceiver ? Math.sin(a.phase) * 1.0 : 0);
+
+        // leader outer glow
+        if (isLeader) {
+          const gr = ctx.createRadialGradient(a.x, a.y, 0, a.x, a.y, 22);
+          gr.addColorStop(0, 'rgba(107,138,255,0.15)');
+          gr.addColorStop(1, 'rgba(107,138,255,0)');
+          ctx.beginPath(); ctx.arc(a.x, a.y, 22, 0, Math.PI * 2);
+          ctx.fillStyle = gr; ctx.fill();
+        }
+
+        // deceiver pulse glow
+        if (a.isDeceiver) {
+          const p = 0.07 + Math.sin(a.phase) * 0.05;
+          const gr = ctx.createRadialGradient(a.x, a.y, 0, a.x, a.y, 16);
+          gr.addColorStop(0, `rgba(244,114,182,${p})`);
+          gr.addColorStop(1, 'rgba(244,114,182,0)');
+          ctx.beginPath(); ctx.arc(a.x, a.y, 16, 0, Math.PI * 2);
+          ctx.fillStyle = gr; ctx.fill();
+        }
+
+        // core dot
+        ctx.beginPath();
+        ctx.arc(a.x, a.y, r, 0, Math.PI * 2);
+        if (a.isDeceiver) {
+          ctx.fillStyle = `rgba(244,114,182,${0.45 + a.cred * 0.45})`;
+        } else if (isLeader) {
+          ctx.fillStyle = `rgba(107,138,255,${0.65 + a.rank * 0.35})`;
+        } else {
+          ctx.fillStyle = `rgba(34,211,238,${0.25 + a.rank * 0.45})`;
+        }
+        ctx.fill();
+
+        // tiny ring for high-connectivity agents
+        if (a.inEdges > 3 && !a.isDeceiver) {
+          ctx.beginPath();
+          ctx.arc(a.x, a.y, r + 3, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(107,138,255,${0.12 + a.inEdges * 0.02})`;
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    init();
+    requestAnimationFrame(draw);
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        resize();
+        for (const a of agents) {
+          a.x = Math.min(a.x, W);
+          a.y = Math.min(a.y, H);
+        }
+      }, 100);
+    });
+  })();
   </script>
+
+  <script>document.getElementById("y").textContent = new Date().getFullYear();</script>
 </body>
 </html>
