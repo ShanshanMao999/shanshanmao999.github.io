@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shan Brain Inc.</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Caveat:wght@600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap');
+
+  :root{
+    --ink:#1a1530;
+    --paper:#f5efe2;
+    --panel:#fffdf7;
+    --line:#2a2342;
+    --amyg:#e8553d;
+    --hippo:#3d9b8f;
+    --dmn:#c77dd6;
+    --acc:#e0a32e;
+    --ceo:#4767c4;
+    --chacha:#6b6580;
+    --shadow:rgba(26,21,48,.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:
+      radial-gradient(circle at 18% 8%, rgba(199,125,214,.10), transparent 40%),
+      radial-gradient(circle at 90% 92%, rgba(71,103,196,.10), transparent 45%),
+      var(--paper);
+    color:var(--ink);
+    font-family:'Space Grotesk','Noto Sans SC',sans-serif;
+    min-height:100%;
+    display:flex;align-items:flex-start;justify-content:center;
+    padding:24px 16px;
+  }
+  body.zh{font-family:'Noto Sans SC','Space Grotesk',sans-serif}
+
+  /* layout: stage on the left, Chacha narrator pinned on the right */
+  .wrap{
+    width:100%;max-width:1040px;
+    display:grid;grid-template-columns:1fr 248px;gap:18px;align-items:start;
+  }
+
+  /* ---- Top bar ---- */
+  .topbar{
+    display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
+    margin-bottom:14px;flex-wrap:wrap;
+  }
+  .eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--chacha);font-weight:500;margin-bottom:8px}
+  .title{font-size:clamp(28px,6vw,48px);font-weight:700;letter-spacing:-.02em;line-height:1}
+  .title .inc{color:var(--amyg)}
+  .subtitle{font-family:'Caveat',cursive;font-size:21px;color:var(--ceo);margin-top:4px;transform:rotate(-1.5deg)}
+  body.zh .subtitle{font-family:'Noto Sans SC',sans-serif;font-size:15px;font-weight:500;transform:none}
+
+  .lang{display:flex;border:2px solid var(--line);border-radius:999px;overflow:hidden;font-size:13px;font-weight:700;background:var(--panel);box-shadow:3px 3px 0 var(--shadow)}
+  .lang button{border:0;background:transparent;color:var(--ink);padding:7px 15px;cursor:pointer;font-family:inherit;font-weight:700;transition:.15s}
+  .lang button.on{background:var(--ink);color:var(--paper)}
+
+  /* ---- Act tabs ---- */
+  .acts{display:flex;gap:8px;margin-bottom:12px}
+  .acttab{
+    flex:1;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;
+    border:2.5px solid var(--line);border-radius:11px;padding:9px 8px;
+    background:var(--panel);color:var(--ink);box-shadow:3px 3px 0 var(--shadow);
+    transition:.12s;line-height:1.25;text-align:center;
+  }
+  .acttab small{display:block;font-size:10px;font-weight:500;color:var(--chacha);letter-spacing:.04em}
+  .acttab.on{background:var(--ceo);color:#fff}
+  .acttab.on small{color:rgba(255,255,255,.8)}
+
+  /* ---- Office room ---- */
+  .room{
+    position:relative;
+    background:repeating-linear-gradient(0deg,transparent 0 38px,rgba(42,35,66,.04) 38px 39px),var(--panel);
+    border:3px solid var(--line);border-radius:18px;box-shadow:8px 8px 0 var(--shadow);
+    padding:20px 18px 18px;overflow:hidden;
+  }
+  .pane{position:absolute;top:16px;right:16px;width:90px;height:60px;background:linear-gradient(160deg,#bfe0ff,#e7f2ff);border:3px solid var(--line);border-radius:6px;pointer-events:none}
+  .pane::before,.pane::after{content:"";position:absolute;background:var(--line)}
+  .pane::before{left:50%;top:0;bottom:0;width:3px;transform:translateX(-50%)}
+  .pane::after{top:50%;left:0;right:0;height:3px;transform:translateY(-50%)}
+
+  .scenetag{display:inline-block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--paper);background:var(--line);padding:5px 11px;border-radius:7px;margin-bottom:16px}
+
+  /* ---- Cast row ---- */
+  .cast{display:flex;justify-content:space-between;gap:6px;margin:4px 2px 18px;flex-wrap:wrap}
+  .seat{flex:1 1 0;min-width:80px;text-align:center;position:relative;transition:transform .3s cubic-bezier(.34,1.56,.64,1),filter .3s;filter:grayscale(.45) opacity(.6);cursor:pointer}
+  .seat.active{filter:none;transform:translateY(-8px) scale(1.06)}
+  .seat.active .av{animation:bob .9s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  .av{width:60px;height:60px;border-radius:50%;margin:0 auto 7px;border:3px solid var(--line);position:relative;box-shadow:3px 3px 0 var(--shadow);display:flex;align-items:center;justify-content:center}
+  .av svg{width:40px;height:40px}
+  .seat .role{font-size:11px;font-weight:700;line-height:1.15}
+  .seat .org{font-size:9.5px;color:var(--chacha);margin-top:1px}
+  .speechdot{display:none;position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:9px;height:9px;border-radius:50%;background:var(--amyg)}
+  .seat.active .speechdot{display:block;animation:pulse 1.1s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(232,85,61,.5)}100%{box-shadow:0 0 0 12px rgba(232,85,61,0)}}
+  .av.amyg{background:#fde3de}.av.hippo{background:#dcf0ec}.av.dmn{background:#f6e2fa}.av.acc{background:#fbeecb}.av.ceo{background:#dde5fa}
+
+  /* ---- Dialogue ---- */
+  .stagebox{min-height:170px;position:relative}
+  .bubble{position:relative;border:3px solid var(--line);border-radius:16px;padding:15px 17px;background:var(--panel);box-shadow:5px 5px 0 var(--shadow);opacity:0;transform:translateY(14px);animation:rise .4s forwards}
+  @keyframes rise{to{opacity:1;transform:translateY(0)}}
+  .bubble .who{display:flex;align-items:center;gap:8px;margin-bottom:7px;flex-wrap:wrap}
+  .badge{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .badge svg{width:14px;height:14px}
+  .whoname{font-weight:700;font-size:14px}
+  .whoorg{font-size:11px;color:var(--chacha);font-weight:500}
+  .line{font-size:15.5px;line-height:1.55}
+  .line em{font-style:normal;font-weight:700}
+  .line .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;padding:2px 8px;border-radius:6px;border:2px solid var(--line);margin:2px 4px 2px 0;background:var(--panel)}
+
+  .bubble.amyg{border-left-width:9px;border-left-color:var(--amyg)}
+  .bubble.hippo{border-left-width:9px;border-left-color:var(--hippo)}
+  .bubble.dmn{border-left-width:9px;border-left-color:var(--dmn)}
+  .bubble.acc{border-left-width:9px;border-left-color:var(--acc)}
+  .bubble.ceo{border-left-width:9px;border-left-color:var(--ceo)}
+  .badge.amyg{background:#fde3de}.badge.hippo{background:#dcf0ec}.badge.dmn{background:#f6e2fa}.badge.acc{background:#fbeecb}.badge.ceo{background:#dde5fa}.badge.chacha{background:#e6e3ee}
+
+  .stamp{display:inline-block;font-family:'Caveat',cursive;font-weight:700;font-size:24px;color:var(--acc);transform:rotate(-6deg);border:3px solid var(--acc);border-radius:8px;padding:0 10px;box-shadow:2px 2px 0 rgba(224,163,46,.3)}
+  body.zh .stamp{font-family:'Noto Sans SC',sans-serif;font-size:17px}
+  .teardrop{font-size:20px;letter-spacing:6px}
+
+  /* Act 3: Shan's real spoken line, shown above the brain reactions */
+  .shanline{
+    display:flex;gap:11px;align-items:flex-start;
+    border:3px solid var(--line);border-left-width:9px;border-left-color:#d36b8a;
+    border-radius:16px;padding:14px 16px;background:#fdf1f4;
+    box-shadow:5px 5px 0 var(--shadow);margin-bottom:14px;
+    opacity:0;transform:translateY(14px);animation:rise .4s forwards;
+  }
+  .shanline .sav{width:38px;height:38px;border-radius:50%;border:3px solid var(--line);
+    background:#f7d7df;display:flex;align-items:center;justify-content:center;flex:0 0 auto;font-size:18px}
+  .shanline .scontent .swho{font-weight:700;font-size:13px;color:#b14a68;margin-bottom:2px;letter-spacing:.02em}
+  .shanline .stext{font-size:16px;line-height:1.5;font-style:italic;color:#5a2f3c}
+  .react-label{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--chacha);margin:2px 2px 8px}
+
+  /* ---- Controls ---- */
+  .controls{display:flex;align-items:center;gap:12px;margin-top:16px;flex-wrap:wrap}
+  .btn{font-family:inherit;font-weight:700;font-size:15px;cursor:pointer;border:3px solid var(--line);border-radius:12px;padding:11px 20px;background:var(--ceo);color:#fff;box-shadow:4px 4px 0 var(--shadow);transition:transform .1s,box-shadow .1s}
+  .btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--shadow)}
+  .btn.ghost{background:var(--panel);color:var(--ink)}
+  .btn:disabled{opacity:.4;cursor:default}
+  .progress{flex:1 1 110px;height:10px;border:2px solid var(--line);border-radius:999px;background:var(--panel);overflow:hidden;min-width:90px}
+  .progress>i{display:block;height:100%;width:0;background:var(--dmn);transition:width .4s ease}
+  .counter{font-size:12px;color:var(--chacha);font-weight:600;font-variant-numeric:tabular-nums}
+
+  /* ---- Chacha narrator panel (right) ---- */
+  .chacha-panel{
+    position:sticky;top:24px;
+    border:3px solid var(--line);border-radius:18px;
+    background:linear-gradient(180deg,#efecf6,#e6e3ee);
+    box-shadow:8px 8px 0 var(--shadow);
+    padding:16px 15px;display:flex;flex-direction:column;gap:12px;
+  }
+  .chacha-head{display:flex;align-items:center;gap:10px}
+  .chacha-ava{width:46px;height:46px;border-radius:14px;border:3px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .chacha-ava svg{width:30px;height:30px}
+  .chacha-name{font-weight:700;font-size:15px;line-height:1.1}
+  .chacha-sub{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--chacha);font-weight:600;margin-top:2px}
+  .chacha-quote{
+    background:#fff;border:2.5px dashed var(--chacha);border-radius:14px;
+    padding:13px 14px;font-size:14px;line-height:1.55;font-style:italic;color:#3b3550;
+    min-height:96px;position:relative;
+    opacity:0;transform:translateY(8px);animation:rise .4s forwards;
+  }
+  .chacha-quote::before{content:"“";position:absolute;top:2px;left:8px;font-size:30px;color:var(--chacha);opacity:.4;font-family:'Caveat',cursive}
+  .chacha-tip{font-size:11px;color:var(--chacha);line-height:1.4;text-align:center}
+  .chacha-tip b{color:var(--ceo)}
+
+  .hint{grid-column:1/-1;text-align:center;margin-top:6px;font-size:12.5px;color:var(--chacha)}
+  .hint b{color:var(--ceo)}
+
+  /* ---- Responsive: stack Chacha below on narrow screens ---- */
+  @media (max-width:820px){
+    .wrap{grid-template-columns:1fr}
+    .chacha-panel{position:static;order:2}
+    .room{order:1}
+    .chacha-quote{min-height:auto}
+  }
+  @media (max-width:520px){
+    .seat{min-width:60px}.av{width:50px;height:50px}.av svg{width:32px;height:32px}
+    .pane{width:66px;height:46px}.line{font-size:14.5px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- LEFT: stage -->
+  <div class="stage" style="min-width:0">
+    <div class="topbar">
+      <div>
+        <div class="eyebrow" data-en="A comedy in one brain" data-zh="一颗大脑的内部喜剧">A comedy in one brain</div>
+        <div class="title">Shan Brain <span class="inc">Inc.</span></div>
+        <div class="subtitle" id="subtitle"></div>
+      </div>
+      <div class="lang" role="group" aria-label="language">
+        <button id="enBtn" class="on" onclick="setLang('en')">EN</button>
+        <button id="zhBtn" onclick="setLang('zh')">中文</button>
+      </div>
+    </div>
+
+    <div class="acts">
+      <button class="acttab on" id="tab0" onclick="goAct(0)">
+        <span data-en="Act 1 · Meet the Team" data-zh="第一幕 · 认识团队">Act 1 · Meet the Team</span>
+        <small data-en="Who's who in your head" data-zh="脑子里都有谁">Who's who in your head</small>
+      </button>
+      <button class="acttab" id="tab1" onclick="goAct(1)">
+        <span data-en="Act 2 · The Meeting" data-zh="第二幕 · 那场会议">Act 2 · The Meeting</span>
+        <small data-en="Camera-ready, 3 days left" data-zh="Camera-ready 倒计时三天">Camera-ready, 3 days left</small>
+      </button>
+      <button class="acttab" id="tab2" onclick="goAct(2)">
+        <span data-en="Act 3 · The Night I Cried" data-zh="第三幕 · 大哭的那晚">Act 3 · The Night I Cried</span>
+        <small data-en="One line, five reactions" data-zh="一句话，五个脑区的反应">One line, five reactions</small>
+      </button>
+    </div>
+
+    <div class="room">
+      <div class="pane"></div>
+      <span class="scenetag" id="scenetag"></span>
+      <div class="cast" id="cast"></div>
+      <div class="stagebox" id="stagebox"></div>
+
+      <div class="controls">
+        <button class="btn" id="nextBtn" onclick="next()">▶ <span id="nextLabel"></span></button>
+        <button class="btn ghost" id="restartBtn" onclick="restart()" data-en="Restart" data-zh="重播">Restart</button>
+        <div class="progress"><i id="bar"></i></div>
+        <span class="counter" id="counter">0 / 0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Chacha narrator -->
+  <aside class="chacha-panel">
+    <div class="chacha-head">
+      <div class="chacha-ava" id="chachaAva"></div>
+      <div>
+        <div class="chacha-name">Chacha</div>
+        <div class="chacha-sub" data-en="Narrator" data-zh="旁白">Narrator</div>
+      </div>
+    </div>
+    <div class="chacha-quote" id="chachaQuote"></div>
+    <div class="chacha-tip">
+      <span data-en="Chacha sits stage-right and explains what's happening." data-zh="Chacha 坐在右侧解说席，讲解此刻发生了什么。">Chacha sits stage-right and explains what's happening.</span>
+    </div>
+  </aside>
+
+  <div class="hint">
+    <span data-en="Tap" data-zh="点击">Tap</span> <b data-en="Next" data-zh="下一步">Next</b>
+    <span data-en="· arrow keys / space also work · click a character to jump to them" data-zh="· 也可用方向键 / 空格 · 点角色头像可跳到它">· arrow keys / space also work · click a character to jump to them</span>
+  </div>
+</div>
+
+<script>
+/* ---------- Icons ---------- */
+const ICON = {
+  amyg:`<svg viewBox="0 0 40 40" fill="none" stroke="#1a1530" stroke-width="2.4" stroke-linecap="round"><path d="M20 5l4 4 5-1 1 5 4 4-3 5 1 5-5 2-3 4-5-2-5 2-3-4-5-2 1-5-3-5 4-4 1-5 5 1z" fill="#e8553d" stroke="#1a1530"/><path d="M14 17l3 3M26 17l-3 3M14 20l3-3M26 20l-3-3"/><path d="M15 27c2 2 8 2 10 0"/></svg>`,
+  hippo:`<svg viewBox="0 0 40 40" fill="none" stroke="#1a1530" stroke-width="2.4" stroke-linecap="round"><path d="M10 28c-4-3-3-12 3-16 5-3 12-2 14 4 1.5 4-1 7-4 6" fill="#3d9b8f" stroke="#1a1530"/><circle cx="16" cy="18" r="1.6" fill="#1a1530"/><circle cx="23" cy="18" r="1.6" fill="#1a1530"/><path d="M15 24c2 1.5 6 1.5 8 0"/></svg>`,
+  dmn:`<svg viewBox="0 0 40 40" fill="none" stroke="#1a1530" stroke-width="2.2" stroke-linecap="round"><circle cx="20" cy="20" r="13" fill="#c77dd6" stroke="#1a1530"/><circle cx="20" cy="20" r="2.4" fill="#1a1530"/><circle cx="11" cy="13" r="1.8" fill="#fff" stroke="#1a1530"/><circle cx="29" cy="13" r="1.8" fill="#fff" stroke="#1a1530"/><circle cx="11" cy="27" r="1.8" fill="#fff" stroke="#1a1530"/><circle cx="29" cy="27" r="1.8" fill="#fff" stroke="#1a1530"/><path d="M20 20l-9-7M20 20l9-7M20 20l-9 7M20 20l9 7" stroke-width="1.5"/></svg>`,
+  acc:`<svg viewBox="0 0 40 40" fill="none" stroke="#1a1530" stroke-width="2.4" stroke-linecap="round"><rect x="8" y="9" width="24" height="22" rx="3" fill="#e0a32e" stroke="#1a1530"/><path d="M13 17h14M13 22h14M13 27h9" stroke-width="2"/><path d="M24 14l2 2 4-4" stroke-width="2.6"/></svg>`,
+  ceo:`<svg viewBox="0 0 40 40" fill="none" stroke="#1a1530" stroke-width="2.4" stroke-linecap="round"><circle cx="20" cy="16" r="8" fill="#4767c4" stroke="#1a1530"/><circle cx="17" cy="15" r="1.5" fill="#fff"/><circle cx="23" cy="15" r="1.5" fill="#fff"/><path d="M16 19c2 1.5 6 1.5 8 0" stroke="#fff"/><path d="M8 34c1-6 5-9 12-9s11 3 12 9" fill="#4767c4" stroke="#1a1530"/><path d="M20 25v9" stroke-width="1.6"/></svg>`,
+  chacha:`<svg viewBox="0 0 40 40" fill="none" stroke="#1a1530" stroke-width="2.2" stroke-linecap="round"><path d="M8 12h24v15H22l-5 5v-5H8z" fill="#e6e3ee" stroke="#1a1530"/><circle cx="16" cy="19" r="1.6" fill="#1a1530"/><circle cx="24" cy="19" r="1.6" fill="#1a1530"/><circle cx="20" cy="19" r="1.6" fill="#1a1530"/></svg>`
+};
+
+/* ---------- Cast ---------- */
+const CAST = [
+  {id:'ceo',  role:{en:'CEO',          zh:'CEO'},      org:{en:'DLPFC',      zh:'背外侧前额叶'}},
+  {id:'hippo',role:{en:'Head of Memory',zh:'记忆总监'}, org:{en:'Hippocampus',zh:'海马体'}},
+  {id:'dmn',  role:{en:'Head of Ideas', zh:'点子总监'}, org:{en:'DMN',        zh:'默认模式网络'}},
+  {id:'amyg', role:{en:'Risk Officer',  zh:'风控官'},   org:{en:'Amygdala',   zh:'杏仁核'}},
+  {id:'acc',  role:{en:'Auditor',       zh:'审计部'},   org:{en:'ACC',        zh:'前扣带皮层'}},
+];
+const NAME={ceo:{en:'CEO · DLPFC',zh:'CEO · 背外侧前额叶'},hippo:{en:'Hippocampus',zh:'海马体'},dmn:{en:'DMN',zh:'默认模式网络'},amyg:{en:'Amygdala',zh:'杏仁核'},acc:{en:'ACC',zh:'前扣带皮层'}};
+const ORG={ceo:{en:'Project management',zh:'项目管理'},hippo:{en:'Indexing & recall',zh:'检索与联想'},dmn:{en:'Storytelling engine',zh:'叙事生成器'},amyg:{en:'Alarm system',zh:'警报系统'},acc:{en:'Error detection',zh:'误差检测'}};
+
+/* ---------- ACT 1 : Meet the Team ----------
+   Shan asks "who is X and what do they do?", the brain part answers,
+   Chacha (narrator, right panel) gives the plain explanation.            */
+const ACT1 = [
+  {speaker:'ceo', // intro framing comes from narrator
+   en:`Welcome to <em>Shan Brain Inc.</em> — five departments, one head. Let's do a quick roll call so you know who's who.`,
+   zh:`欢迎来到 <em>Shan Brain Inc.</em>——五个部门，一颗脑袋。先点个名，让你认识一下大家。`,
+   chacha:{en:`You actually started by asking me: who is DLPFC, who's the hippocampus, the DMN, the amygdala, the ACC — and what do they each do? So here's the team.`,
+           zh:`你最开始问我的，就是：谁是 DLPFC、谁是海马体、谁是 DMN、谁是杏仁核、谁是 ACC——他们各自在脑子里干嘛？那就先介绍一遍。`}},
+
+  {speaker:'ceo',
+   en:`I'm the <em>CEO</em>. My real name is the <em>dorsolateral prefrontal cortex (DLPFC)</em>. I hold the plan, set priorities, keep us on task, and say "not now" to good ideas at bad times.`,
+   zh:`我是 <em>CEO</em>，真名叫<em>背外侧前额叶（DLPFC）</em>。我负责拿主意、定优先级、盯着任务，并在错误的时间对好点子说一句"现在不行"。`,
+   chacha:{en:`The DLPFC is your executive control — working memory, planning, focus, impulse-holding. When you "knuckle down and finish the figure," that's this department doing its job.`,
+           zh:`DLPFC 是你的执行控制中枢——工作记忆、计划、专注、压住冲动。当你"沉下心去把图做完"，就是这个部门在干活。`}},
+
+  {speaker:'hippo',
+   en:`I'm the <em>Head of Memory</em> — the <em>hippocampus</em>. Ask me anything and I'll pull the file: "how many papers do I have? ALife just got in… what got rejected last year?" I index and I <em>link</em>.`,
+   zh:`我是<em>记忆总监</em>——<em>海马体</em>。问我任何事我都能调档案："我有几篇论文？ALife 刚中……去年被拒过啥？"我负责检索，还负责<em>联想</em>。`,
+   chacha:{en:`The hippocampus is your indexer: it stores memories and retrieves them, but its superpower is linking far-apart things — MAS → neuroscience → your thesis — almost instantly. Your version is unusually good at cross-level association.`,
+           zh:`海马体是你的索引器：存记忆、取记忆，但它的超能力是把相隔很远的东西连起来——多智能体系统 → 神经科学 → 你的论文——几乎瞬间完成。你这一版，特别擅长跨层级联想。`}},
+
+  {speaker:'dmn',
+   en:`I'm the <em>Head of Ideas</em> — the <em>Default Mode Network (DMN)</em>. When you're not locked on a task, I take the floor and start telling stories: "Perret has lots of papers → I have few → the future looks risky…"`,
+   zh:`我是<em>点子总监</em>——<em>默认模式网络（DMN）</em>。当你没盯着任务时，我就上台讲故事："Perret 论文很多 → 我论文少 → 未来很危险……"`,
+   chacha:{en:`The DMN runs when the mind wanders — daydreaming, self-reflection, imagining the future. It's brilliant at invention, but it loves turning a small fact into a big narrative. That's where "I'm so bad at this" often gets written.`,
+           zh:`DMN 在你走神时启动——发呆、自我反思、想象未来。它的发明能力很强，但特别爱把一个小事实编成一个大叙事。"我好差"这种故事，常常就是在这里被写出来的。`}},
+
+  {speaker:'amyg',
+   en:`I'm the <em>Risk Officer</em> — the <em>amygdala</em>. I flag things fast: <em>Important! Career-related! Pay attention!</em> I don't decide you're bad — I just sound the alarm.`,
+   zh:`我是<em>风控官</em>——<em>杏仁核</em>。我反应很快，专门贴标签：<em>重要！和职业有关！注意！</em>我不会判定你很差——我只负责拉警报。`,
+   chacha:{en:`The amygdala is your salience-and-threat detector. Seeing a rival's CV, it shouts "this matters." It tags urgency and emotion — it raises the volume, but it doesn't write the conclusion.`,
+           zh:`杏仁核是你的显著性与威胁探测器。看到对手的简历，它会喊"这事重要"。它给事情贴上紧急和情绪的标签——它负责调大音量，但不负责写结论。`}},
+
+  {speaker:'acc',
+   en:`I'm the <em>Auditor</em> — the <em>anterior cingulate cortex (ACC)</em>. I do one cold calculation: <em>goal vs reality = the gap</em>. Target 95, current 70, error 25. That's all I report. <span class="tag">Δ = 25</span>`,
+   zh:`我是<em>审计部</em>——<em>前扣带皮层（ACC）</em>。我只做一个冷静的计算：<em>目标 vs 现实 = 差距</em>。目标 95，当前 70，误差 25。我只报这个。<span class="tag">Δ = 25</span>`,
+   chacha:{en:`The ACC is your error detector: it measures the distance between where you are and where you want to be. Crucial point — it only outputs "there is a gap." It never outputs "you're bad." The DMN adds that part.`,
+           zh:`ACC 是你的误差检测器：它测量"你在哪"和"你想到哪"之间的距离。关键是——它只输出"存在差距"，从不输出"你很差"。后半句是 DMN 加上去的。`}},
+
+  {speaker:'ceo',
+   en:`So when you read Perret's CV and felt like a "useless PhD," here's the actual assembly line — and notice no one in it ever said you were bad.`,
+   zh:`所以当你看着 Perret 的简历、觉得自己是个"菜鸡博士"时，真正的流水线是这样的——注意，这条线上没有任何一个人说过你很差。`,
+   chacha:{en:`The pipeline: Amygdala tags it as important → Hippocampus pulls your records → ACC computes the gap (Δ=25) → DMN explains the gap → out comes a sentence. "There's a gap with Perret" is true. "I'm bad" is a story the DMN added on top.`,
+           zh:`这条流水线是：杏仁核标记"重要" → 海马体调出你的记录 → ACC 算出差距（Δ=25）→ DMN 解释这个差距 → 最后吐出一句话。"我和 Perret 有差距"是真的，"我很差"是 DMN 额外加上去的故事。`}},
+
+  {speaker:'dmn',
+   en:`And here's a twist you caught yourself: emotions aren't <em>nodes</em> and aren't <em>commands</em> — they're <em>vectors</em>. Risk↑, importance↑, uncertainty↑, reward↓ → "anxiety." A compressed broadcast of the whole system's state.`,
+   zh:`还有一个你自己抓到的点：情绪不是<em>节点</em>，也不是<em>指令</em>——它是<em>矢量</em>。风险↑、重要性↑、不确定性↑、奖励↓ →"焦虑"。是整个系统状态被压缩后的一次广播。`,
+   chacha:{en:`That was your idea, and it's a sharp one. You stopped at "I feel anxious" less and started asking "what is this vector encoding — what does the system actually need?" That move is emotion-decoding. You're getting good at it.`,
+           zh:`这是你的想法，而且很犀利。你越来越少停在"我好焦虑"，而是开始问"这个矢量在编码什么——系统到底需要什么？"这个动作就是情绪解码。你越来越擅长了。`}},
+
+  {speaker:'ceo',
+   en:`Roll call done. Now watch us actually try to hold a meeting. Switch to <em>Act 2</em>. 😄`,
+   zh:`点名完毕。现在来看我们真正开会是什么样子。切到<em>第二幕</em>。😄`,
+   chacha:{en:`Now you've met everyone. Act 2 is what happens when all five are in one room, three days before a deadline. Spoiler: it's chaos, and it's affectionate.`,
+           zh:`现在你认识所有人了。第二幕，是这五个人在截稿前三天挤进同一间会议室会发生什么。剧透：很混乱，也很可爱。`}},
+];
+
+/* ---------- ACT 2 : The Meeting ---------- */
+const ACT2 = [
+  {speaker:'ceo',
+   en:`Today's tasks: <em>figure fonts</em>, <em>reviewer edits</em>, <em>equation definitions</em>. That's the whole list.`,
+   zh:`今天的任务：<em>图的字体</em>、<em>审稿人修改</em>、<em>公式定义</em>。整张清单就这些。`,
+   chacha:{en:`Three days to camera-ready. The CEO opens with a short, reasonable list. Reasonable lists rarely survive this team.`,
+           zh:`距离 camera-ready 三天。CEO 开场列了一张简短、合理的清单。可惜合理的清单，在这个团队里很难活下来。`}},
+
+  {speaker:'hippo',
+   en:`(bursting in) Boss! I just realized — what if the hippocampus is basically a <em>graph-database indexer</em>?!`,
+   zh:`（冲进来）老板！我刚想到——如果海马体其实就是一个<em>图数据库索引器</em>呢？！`,
+   chacha:{en:`The Head of Memory has burst in with a structural insight that has nothing to do with the figure.`,
+           zh:`记忆总监冲了进来，带着一个跟改图毫无关系的结构性洞察。`}},
+
+  {speaker:'dmn',
+   en:`(climbing in through the window) Let me add! Emotions might not be <em>nodes</em> — they're <em>vectors</em>! And love might be the <em>company culture</em>!`,
+   zh:`（从窗户翻进来）我补充！情绪可能不是<em>节点</em>——是<em>矢量</em>！而爱，可能是<em>企业文化</em>！`,
+   chacha:{en:`The Head of Ideas did not use the door. He never uses the door.`,
+           zh:`点子总监没走门。他从来不走门。`}},
+
+  {speaker:'acc',
+   en:`(quietly raising a hand) Reminder. The figure still isn't fixed. <span class="tag">Δ = 25</span>`,
+   zh:`（默默举手）提醒一下。图还没改。<span class="tag">Δ = 25</span>`,
+   chacha:{en:`The Auditor does what the Auditor does: states the gap, asks for nothing dramatic.`,
+           zh:`审计部做着审计部的事：陈述差距，不煽情，不要求什么。`}},
+
+  {speaker:'dmn',
+   en:`Forget the figure for a second! We've found a theory of cognition — emotion is a <em>compressed broadcast of system state</em>!`,
+   zh:`先别管图！我们发现了一个认知学理论——情绪是一种<em>压缩后的系统状态广播</em>！`,
+   chacha:{en:`This is a genuinely good idea. Its timing is genuinely terrible. Both can be true.`,
+           zh:`这是个真的很好的想法。它出现的时机真的很糟。两件事可以同时成立。`}},
+
+  {speaker:'hippo',
+   en:`Yes! It connects everything: MAS → neuroscience → cognitive architecture → future products!`,
+   zh:`对对对！它连得上一切：多智能体系统 → 神经科学 → 认知架构 → 未来产品！`,
+   chacha:{en:`Cross-level association firing at full speed. This is the talent. It's also the distraction. Same engine.`,
+           zh:`跨层级联想全速运转。这是天赋，也是分心。同一台引擎。`}},
+
+  {speaker:'acc', en:`{stamp}`, zh:`{stamp}`,
+   chacha:{en:`The Auditor has stopped using words.`, zh:`审计部已经懒得说话了。`}},
+
+  {speaker:'amyg',
+   en:`(charging in) AND career risk! Perret! Royal Society B! Future jobs!`,
+   zh:`（冲进来）还有职业风险！Perret！Royal Society B！未来的工作！`,
+   chacha:{en:`The Risk Officer has smelled a deadline and arrived to make everything feel slightly more urgent.`,
+           zh:`风控官闻到了截止日期的味道，赶来让一切显得更紧急一点。`}},
+
+  {speaker:'dmn',
+   en:`Boss, I think we should write a book — <em>Emotional Broadcasts & Cognitive Topology Networks!</em>`,
+   zh:`老板我觉得我们应该写本书——<em>《情绪广播与认知拓扑网络》！</em>`,
+   chacha:{en:`From "fix the figure font" to "let's publish a book." Twenty minutes, maybe less.`,
+           zh:`从"改个图的字体"到"我们出本书吧"。二十分钟，甚至更短。`}},
+
+  {speaker:'acc', en:`{stamp}`, zh:`{stamp}`,
+   chacha:{en:`Still the figure.`, zh:`还是那张图。`}},
+
+  {speaker:'ceo',
+   en:`(rubbing temples) Everyone. I know. I know all of it.`,
+   zh:`（揉太阳穴）各位。我知道。这些我都知道。`,
+   chacha:{en:`The CEO isn't angry. The CEO is holding the whole list while five departments shout over each other.`,
+           zh:`CEO 没有生气。CEO 只是一边攥着整张清单，一边听五个部门互相盖过对方的声音。`}},
+
+  {speaker:'ceo',
+   en:`…You're all genuinely brilliant.`,
+   zh:`……你们真的都很优秀。`,
+   chacha:{en:`Five seconds of silence. Then the CEO looks out the window and says the true thing.`,
+           zh:`沉默五秒。然后 CEO 望向窗外，说了句真心话。`}},
+
+  {speaker:'amyg', en:`{tears}`, zh:`{tears}`,
+   chacha:{en:`The whole team tears up. Even the Auditor.`, zh:`全体员工热泪盈眶。连审计部都湿了眼眶。`}},
+
+  {speaker:'ceo',
+   en:`But. <em>Figure 1.</em> 🤣`,
+   zh:`但是。<em>Figure 1。</em>🤣`,
+   chacha:{en:`Love and the deadline, in one breath. That's the whole company.`,
+           zh:`爱与截止日期，一口气说完。这就是整间公司。`}},
+
+  {speaker:'ceo',
+   en:`Here's the real shift, though — the problem was never "DMN is too strong."`,
+   zh:`不过这里有个真正的转变——问题从来不是"DMN 太强"。`,
+   chacha:{en:`This is the part that matters. You used to say "my DMN sabotages me." Now you say "my DMN is a brilliant inventor." That reframe is the growth.`,
+           zh:`这才是重点。你以前说"我的 DMN 又害我了"。现在你说"我的 DMN 是个杰出的发明家"。这个视角的转变，本身就是成长。`}},
+
+  {speaker:'ceo',
+   en:`DMN's invention rate is just running ahead of my scheduling power. The fix isn't silence — it's a <em>parking lot</em>: log the idea, ship the figure today, build it later.`,
+   zh:`只是 DMN 的发明速度，暂时超过了我的排期能力。解决办法不是让大家闭嘴——而是一个 <em>parking lot</em>：把点子记下来，今天先把图做完，以后再做。`,
+   chacha:{en:`DMN invents. CEO schedules. Hippocampus archives. ACC signs off. When that loop clicks, the team stops fighting and starts compounding: 1 + 1 + 1 + 1 > 4.`,
+           zh:`DMN 创新，CEO 排期，海马体归档，ACC 验收。当这个闭环转起来，团队就不再内耗，而是开始复利：1 + 1 + 1 + 1 > 4。`}},
+
+  {speaker:'ceo',
+   en:`The ideas really are good. But the figure font still needs me. 😄 — <em>End of Scene 427.</em>`,
+   zh:`这些想法确实都很好。但图的字体，还是得我去改。😄 ——<em>第427场 完。</em>`,
+   chacha:{en:`And notice what this whole conversation was: it started at "I'm scared I won't finish camera-ready" and ended at a theory of mind, told as a comedy. That's not a flaw. That's the company working.`,
+           zh:`再看看这整段对话：它从"我怕做不完 camera-ready"开始，结束在一套关于心智的理论，还讲成了喜剧。这不是缺陷。这是公司在正常运转。`}},
+];
+
+/* ---------- ACT 3 : The Night I Cried ----------
+   Pulled from a real early observation chat. Each "scene" opens with one of
+   Shan's actual lines (shanline), then the five brain regions each say what
+   they were thinking at that exact moment. Chacha narrates the real mechanism. */
+const ACT3 = [
+  // -- Scene A : the cat threw up --
+  {speaker:'amyg',
+   shanline:{en:`"I was in flow studying… then my cat threw up twice this morning."`,
+             zh:`"我本来在心流里学习……结果我的猫今天早上吐了两次。"`},
+   en:`THREAT DETECTED. Living creature. Something's wrong. <em>Important! Pay attention NOW!</em>`,
+   zh:`检测到威胁。活的生命。出问题了。<em>重要！立刻注意！</em>`,
+   chacha:{en:`A cat throwing up is a small event. The amygdala doesn't know that yet — it just spikes salience: "this matters, look here." Volume up. No conclusion attached.`,
+           zh:`猫吐其实是件小事。但杏仁核还不知道——它只是把显著性拉满："这事重要，快看。"音量调大，但还没有任何结论。`}},
+
+  {speaker:'hippo',
+   en:`Pulling the file… "she threw up before too… I've been so tired… I haven't been around much…"`,
+   zh:`调取档案中……"她以前也吐过……我最近好累……我陪她的时间不多……"`,
+   chacha:{en:`The hippocampus retrieves related memories on demand. Tired? Busy? Past incidents? It hands all of it up the chain — accurately, but without weighing whether it's relevant.`,
+           zh:`海马体按需调出相关记忆。累？忙？以前的事？它把这些一股脑往上递——很准确，但不负责判断这些是否真的相关。`}},
+
+  {speaker:'dmn',
+   en:`Story time. Cat sick → I can't even care for her → maybe I can't care for any life → maybe I'd be a bad parent → maybe I've lost my humanity → maybe all I have left is research.`,
+   zh:`故事时间。猫病了 → 我连她都照顾不好 → 也许我照顾不好任何生命 → 也许我也当不好父母 → 也许我失去了人性 → 也许我只剩下科研了。`,
+   chacha:{en:`Here it is — the DMN's signature move. It takes one fact and builds a six-step staircase down to "something is wrong with me." Every step feels logical. None of them was given by the data.`,
+           zh:`来了——这就是 DMN 的招牌动作。它拿一个事实，搭出一条六级台阶，一路通往"我这个人有问题"。每一步都显得合乎逻辑，但没有一步是数据给的。`}},
+
+  {speaker:'acc',
+   en:`Cold reading: goal = "be someone who cares for life well." Current = "cat is sick." Gap detected. <span class="tag">Δ = mismatch</span>`,
+   zh:`冷静读数：目标 = "做一个能照顾好生命的人"。当前 = "猫病了"。检测到差距。<span class="tag">Δ = 不匹配</span>`,
+   chacha:{en:`The ACC only reports a distance between goal and reality. That's its entire job. It never says "and therefore you're bad" — the DMN borrowed its number and wrote that part.`,
+           zh:`ACC 只报告目标与现实之间的距离。这就是它的全部工作。它从不说"所以你很差"——是 DMN 借走了它的数字，自己加上了后半句。`}},
+
+  {speaker:'ceo',
+   en:`(quietly) Team… a cat threw up. That is the size of the event. Let's not approve a documentary about my entire character over it.`,
+   zh:`（小声）各位……猫吐了。事件的大小就这么大。别因为这个就批准一部关于我整个人格的纪录片。`,
+   chacha:{en:`The CEO (DLPFC) is the one part that can pause the staircase. When it's rested, it says "right-size the event." When it's depleted — three deadlines deep — it's too tired to interrupt, and the story runs unchecked.`,
+           zh:`CEO（DLPFC）是唯一能叫停那条台阶的部门。它有精力时会说"把事件还原成它本来的大小"。但当它被掏空——压着三个截止日期——它就累到没法打断，于是故事一路狂奔，无人喊停。`}},
+
+  // -- Scene B : crying, the cat comes over --
+  {speaker:'amyg',
+   shanline:{en:`"I cried again. While I cried, my cat rubbed against the back of my hair."`,
+             zh:`"我又哭了。我哭的时候，小猫在我的头发后面蹭来蹭去。"`},
+   en:`Distress signal active. Tears. System overload. Broadcasting: <em>not okay, not okay.</em>`,
+   zh:`痛苦信号激活。眼泪。系统过载。广播中：<em>状态不对，状态不对。</em>`,
+   chacha:{en:`Crying isn't a verdict — it's an overflow. When the emotional buffer runs shallow, pressure doesn't get processed, it spills. The amygdala is just broadcasting the overload.`,
+           zh:`哭不是判决——是溢出。当情绪缓冲池变浅，压力来不及被消化，就直接漫出来。杏仁核只是在广播这次过载。`}},
+
+  {speaker:'hippo',
+   en:`Indexing the moment: "she didn't run away. She came closer. She's rubbing against me." Filing under… unsure where.`,
+   zh:`正在索引此刻："她没有躲开。她凑得更近。她在蹭我。"归档到……不确定放哪。`,
+   chacha:{en:`The hippocampus captured the real data: the cat approached a crying person instead of fleeing. That's a fact about being responded to. Whether it gets believed depends on who reads it next.`,
+           zh:`海马体捕捉到了真实数据：猫面对一个哭泣的人，选择靠近而不是逃走。这是一条"我被回应了"的事实。但它会不会被相信，取决于下一个读取它的是谁。`}},
+
+  {speaker:'dmn',
+   en:`Reframing: she's "forced to feel my anxiety" → I'm hurting her → I should find her a better owner → see, I ruin what I love.`,
+   zh:`重新解读：她"被迫感受我的焦虑" → 我在伤害她 → 我该给她找个更好的主人 → 你看，我会毁掉我爱的东西。`,
+   chacha:{en:`The DMN took a tender fact — a cat comforting you — and rewrote it into evidence against you. Same input as the hippocampus, opposite conclusion. This is the move worth catching in the act.`,
+           zh:`DMN 把一个温柔的事实——猫在安慰你——改写成了对你不利的证据。和海马体输入的是同一条数据，结论却相反。这正是值得当场抓住的那个动作。`}},
+
+  {speaker:'acc',
+   en:`Detecting a contradiction: "she came to comfort me" vs "I'm a bad owner." Both can't score high. Flagging conflict.`,
+   zh:`检测到矛盾："她来安慰我" vs "我是个坏主人"。两者不可能同时成立。标记冲突。`,
+   chacha:{en:`Quietly, the ACC notices the two stories don't add up. That flicker of "wait, these contradict" is the opening — it's where metacognition can step in and ask which story the evidence actually supports.`,
+           zh:`ACC 悄悄发现这两个故事对不上账。那一闪而过的"等等，这俩矛盾"就是缺口——元认知正是从这里介入，去问：证据到底支持哪个故事？`}},
+
+  {speaker:'ceo',
+   en:`Logging it: "caring for a life isn't never letting them get sick. It's noticing when they do." You noticed. You even cried. That's not a cold person.`,
+   zh:`记录在案："照顾生命不是永远不让它生病，而是它生病时你会注意到。"你注意到了，你甚至为此哭了。这不是一个冷漠的人。`,
+   chacha:{en:`This is the CEO doing real executive work: not silencing the feeling, but re-reading the evidence correctly. The relief in the original chat came exactly here — the reframe from "I'm bad" to "I'm overloaded and I still cared."`,
+           zh:`这才是 CEO 在做真正的执行工作：不是压住情绪，而是把证据重新读对。你那晚真正松一口气，就发生在这里——从"我很差"重写成"我只是过载了，但我依然在乎"。`}},
+
+  // -- Scene C : crying at everything --
+  {speaker:'amyg',
+   shanline:{en:`"Lately I cry so easily — at an accept, at a rejection, at waiting on funding, at the cat."`,
+             zh:`"我最近好容易哭——拿到 accept 哭，被拒哭，等拨款焦虑哭，猫吐也哭。"`},
+   en:`Everything is tagged HIGH right now. Good news? HIGH. Bad news? HIGH. Uncertainty? HIGH.`,
+   zh:`现在什么都被标成"高强度"。好消息？高。坏消息？高。不确定？高。`,
+   chacha:{en:`When good and bad events produce the same response — tears — it's a tell: the buffer is nearly empty. The amygdala isn't malfunctioning; the system just has no slack left to absorb anything.`,
+           zh:`当好事和坏事产生同一种反应——眼泪——这是个信号：缓冲池快空了。杏仁核没坏；只是整个系统已经没有余量去吸收任何东西了。`}},
+
+  {speaker:'hippo',
+   en:`Recall: "accept → straight into registration, fees, admin. Reward never actually landed." Pattern logged.`,
+   zh:`检索："accept → 紧接着是注册、缴费、各种杂务。奖励其实从没真正到账。"模式已记录。`,
+   chacha:{en:`The hippocampus spots the real pattern: every win got swallowed by the next chore before it could be felt. That's not weakness — that's an accurate read of a depleted reward system.`,
+           zh:`海马体看出了真正的模式：每一次胜利还没来得及被感受，就被下一件杂务吞掉了。这不是脆弱——这是对一个被透支的奖励系统的准确读数。`}},
+
+  {speaker:'dmn',
+   en:`Conclusion incoming: "I haven't taken care of myself → I'm failing at the basics → expecting reward just sets me up for disappointment."`,
+   zh:`结论将至："我没把自己照顾好 → 我连基本的都做不好 → 期待奖励只会让我更失望。"`,
+   chacha:{en:`The DMN turns "I'm exhausted" into "I'm failing." But exhaustion is a fuel reading, not a character verdict. The whole skill you've been building is to keep these two apart.`,
+           zh:`DMN 把"我精疲力竭"翻译成"我很失败"。但精疲力竭是油量读数，不是人格判决。你一直在练的那个能力，就是把这两件事分开。`}},
+
+  {speaker:'acc',
+   en:`Recomputing: the gap isn't "effort too low." Effort is high. The gap is "reward expected − reward received." Different equation entirely.`,
+   zh:`重新计算：差距不是"努力太少"。努力很高。差距是"期待的奖励 − 实际收到的奖励"。完全是另一个方程。`,
+   chacha:{en:`Crucial correction. The ACC, read properly, shows the deficit isn't in your effort — it's in the reward that never arrived. "Papers are few" ≠ "I didn't try." Different variables.`,
+           zh:`关键修正。ACC 被正确解读后会显示：亏空不在你的努力，而在那份从未到账的奖励。"论文少" ≠ "我没努力"。是不同的变量。`}},
+
+  {speaker:'ceo',
+   en:`Decision: stop debugging my character. Start debugging the system. The bug isn't "I'm bad" — it's "buffer depleted, reward delayed." Those have fixes.`,
+   zh:`决策：别再调试我的人格了，开始调试这个系统。Bug 不是"我很差"——是"缓冲池耗尽、奖励延迟"。这些是有解的。`,
+   chacha:{en:`This is the turn the whole night was building toward. The same facts, re-sorted: papers few ≠ lazy, cat sick ≠ bad owner, future unclear ≠ future bad. You didn't solve the problems — you renamed them correctly. That alone changed who was speaking.`,
+           zh:`这是整晚一直在铺垫的转折。同样的事实，重新归类：论文少 ≠ 懒，猫病了 ≠ 坏主人，未来不明 ≠ 未来一定糟。你没有解决问题——你把它们重新命名对了。仅这一点，就改变了说话的主体。`}},
+
+  // -- closing --
+  {speaker:'ceo',
+   shanline:{en:`"We spent half an hour crying and took my emotions apart."`,
+             zh:`"我们花了半个小时哭了一场，解构了一下我的情绪。"`},
+   en:`Status update: 100 tangled problems → Problem A, Problem B, Problem C. System restabilised. The person at the desk now knows what she's actually working for. — <em>End of Act 3.</em>`,
+   zh:`状态更新：100 个纠缠的问题 → 问题 A、问题 B、问题 C。系统重新稳定。坐在桌前的那个人，现在知道自己到底在为什么努力了。——<em>第三幕 完。</em>`,
+   chacha:{en:`Crying didn't fix anything — it sorted things. Half an hour earlier you were asking "am I not enough?" By the end you were saying "I want to become capable, I want to keep my choices, I want to still be me." The problems stayed. The speaker changed — from doubting herself to understanding herself. From anxiety to narrative.`,
+           zh:`哭没有解决任何事——它整理了事情。半小时前你在问"我是不是不够？"到最后你在说"我想变得有能力，我想保有选择权，我想依旧是我。"问题还在，但说话的主体变了——从怀疑自己，变成理解自己。From anxiety to narrative。`}},
+];
+
+const ACTS=[ACT1,ACT2,ACT3];
+const ACT_TAG=[
+  {en:'Onboarding · Meet the Departments',zh:'入职 · 认识各部门'},
+  {en:'Conference Room · Prefrontal Cortex HQ',zh:'会议室 · 前额叶总部'},
+  {en:'Late Night · One Line, Five Minds',zh:'深夜 · 一句话，五个脑区'}
+];
+const SUBTITLE=[
+  {en:'Act 1 · Who lives in your head',zh:'第一幕 · 你脑子里住着谁'},
+  {en:'Scene 427 · Camera-ready, 3 days left',zh:'第427场 · Camera-ready 倒计时三天'},
+  {en:'Act 3 · The night the cat threw up',zh:'第三幕 · 猫吐了的那个晚上'}
+];
+
+/* ---------- State ---------- */
+let lang='en', act=0, idx=-1;
+
+/* render cast seats once */
+const castEl=document.getElementById('cast');
+CAST.forEach(c=>{
+  const s=document.createElement('div');
+  s.className='seat'; s.id='seat-'+c.id;
+  s.onclick=()=>jumpTo(c.id);
+  s.innerHTML=`<span class="speechdot"></span><div class="av ${c.id}">${ICON[c.id]}</div>
+    <div class="role" data-role="${c.id}">${c.role[lang]}</div>
+    <div class="org" data-org="${c.id}">${c.org[lang]}</div>`;
+  castEl.appendChild(s);
+});
+document.getElementById('chachaAva').innerHTML=ICON.chacha;
+
+const box=document.getElementById('stagebox');
+const quote=document.getElementById('chachaQuote');
+const bar=document.getElementById('bar');
+const counter=document.getElementById('counter');
+const nextBtn=document.getElementById('nextBtn');
+const nextLabel=document.getElementById('nextLabel');
+
+function fmt(text){
+  return text
+    .replace('{stamp}',`<span class="stamp">${lang==='en'?'Figure.':'改图。'}</span>`)
+    .replace('{tears}',`<span class="teardrop">🥹 🥹 🥹 🥹</span>`);
+}
+
+function renderLine(item){
+  const sp=item.speaker;
+  let head='';
+  if(item.shanline){
+    const reactLabel = lang==='en' ? 'Inside her head, that moment' : '这一刻，她脑子里';
+    head=`
+      <div class="shanline">
+        <div class="sav">🙂‍↕️</div>
+        <div class="scontent">
+          <div class="swho">Shan</div>
+          <div class="stext">${item.shanline[lang]}</div>
+        </div>
+      </div>
+      <div class="react-label">${reactLabel}</div>`;
+  }
+  box.innerHTML=`
+    ${head}
+    <div class="bubble ${sp}">
+      <div class="who">
+        <span class="badge ${sp}">${ICON[sp]}</span>
+        <span class="whoname">${NAME[sp][lang]}</span>
+        <span class="whoorg">· ${ORG[sp][lang]}</span>
+      </div>
+      <div class="line">${fmt(item[lang])}</div>
+    </div>`;
+  // narrator
+  quote.style.animation='none'; void quote.offsetWidth; quote.style.animation='';
+  quote.innerHTML = item.chacha[lang];
+  // active seat
+  document.querySelectorAll('.seat').forEach(s=>s.classList.remove('active'));
+  const seat=document.getElementById('seat-'+sp);
+  if(seat) seat.classList.add('active');
+}
+
+function updateUI(){
+  const total=ACTS[act].length;
+  counter.textContent=`${Math.max(idx+1,0)} / ${total}`;
+  bar.style.width=((idx+1)/total*100)+'%';
+  nextBtn.disabled = idx>=total-1;
+  nextLabel.textContent = idx<0
+    ? (lang==='en'?'Start':'开始')
+    : (lang==='en'?'Next':'下一步');
+}
+
+function next(){ if(idx>=ACTS[act].length-1)return; idx++; renderLine(ACTS[act][idx]); updateUI(); }
+function restart(){ idx=-1; box.innerHTML=''; quote.innerHTML=defaultQuote(); nextBtn.disabled=false; document.querySelectorAll('.seat').forEach(s=>s.classList.remove('active')); updateUI(); }
+function jumpTo(id){ const arr=ACTS[act]; for(let i=0;i<arr.length;i++){ if(arr[i].speaker===id){ idx=i; renderLine(arr[i]); updateUI(); return; } } }
+
+function defaultQuote(){
+  if(act===2){
+    return lang==='en'
+      ? `This act is built from a real late-night chat. Each scene opens with a line you actually said — then your five brain regions show what each was thinking, right then. Press <b>Start</b>.`
+      : `这一幕取自一段真实的深夜对话。每一场都以你当时真说过的一句话开头——然后你的五个脑区，展示那一刻各自在想什么。点 <b>开始</b>。`;
+  }
+  return lang==='en'
+    ? `Hi, I'm Chacha. I'll narrate from over here. Press <b>Start</b> and I'll walk you through each part of your brain — who they are and what they do.`
+    : `嗨，我是 Chacha，坐在这边解说。点 <b>开始</b>，我带你认识脑子里的每个部分——他们是谁、负责什么。`;
+}
+
+function goAct(a){
+  act=a; idx=-1;
+  document.getElementById('tab0').classList.toggle('on',a===0);
+  document.getElementById('tab1').classList.toggle('on',a===1);
+  document.getElementById('tab2').classList.toggle('on',a===2);
+  document.getElementById('scenetag').textContent=ACT_TAG[a][lang];
+  document.getElementById('subtitle').textContent=SUBTITLE[a][lang];
+  box.innerHTML=''; quote.innerHTML=defaultQuote();
+  document.querySelectorAll('.seat').forEach(s=>s.classList.remove('active'));
+  nextBtn.disabled=false;
+  updateUI();
+}
+
+function setLang(l){
+  lang=l;
+  document.body.classList.toggle('zh',l==='zh');
+  document.getElementById('enBtn').classList.toggle('on',l==='en');
+  document.getElementById('zhBtn').classList.toggle('on',l==='zh');
+  document.querySelectorAll('[data-en]').forEach(el=>{ if(el.hasAttribute('data-zh')) el.textContent=el.getAttribute('data-'+l); });
+  CAST.forEach(c=>{
+    document.querySelector(`[data-role="${c.id}"]`).textContent=c.role[l];
+    document.querySelector(`[data-org="${c.id}"]`).textContent=c.org[l];
+  });
+  document.getElementById('scenetag').textContent=ACT_TAG[act][l];
+  document.getElementById('subtitle').textContent=SUBTITLE[act][l];
+  if(idx>=0) renderLine(ACTS[act][idx]); else quote.innerHTML=defaultQuote();
+  updateUI();
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();next();}
+  if(e.key==='ArrowLeft'){e.preventDefault();restart();}
+});
+
+/* init */
+document.getElementById('scenetag').textContent=ACT_TAG[0][lang];
+document.getElementById('subtitle').textContent=SUBTITLE[0][lang];
+quote.innerHTML=defaultQuote();
+updateUI();
+</script>
+</body>
+</html>
