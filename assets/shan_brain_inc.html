@@ -783,20 +783,146 @@ const ACT5 = [
            zh:`第五幕、以及全部五幕的收获：在第二到第四幕里受苦的那个"我"——散乱、自我批判、惯着 DMN——从来都不是真正的你。它只是一个忘了自己名字的观看者。给它命名（元认知），工作就清晰了：不是去噤声你最闪亮的部分，也不是把你的执行官累垮，而是给每个部门一张时间表、一个奖励函数、一次公正的聆听——然后，平静地，做决定。DMN 从来都不是问题。那把空着的椅子才是。它不再空着了。`}},
 ];
 
-const ACTS=[ACT1,ACT2,ACT3,ACT4,ACT5];
+/* ---------- ACT 6 : Where Does the CEO's Guilt Come From? ----------
+   Picks up after the rename. shanshan ends a day having "done nothing," soaked in
+   guilt, and notices something: every department got its own reward today except the
+   CEO — and she keeps overruling him even though he's her chief of staff. The act
+   re-models the night not as "DMN bullies CEO" but as a reward-allocation failure,
+   then dissects where guilt actually comes from (Guilt = ACC error × DMN self-
+   attribution), traces it to "future shanshan," and ends on the one cheap fix the
+   CEO actually needs: not love, not a pep talk — to be trusted, and to win once. */
+const ACT6 = [
+  {speaker:'ceo',
+   shanline:{en:`"I did nothing today. I feel so guilty. And everyone got their own reward except you — yet I still never listen to you, even though you're my chief of staff."`,
+             zh:`"我今天什么都没做。我好愧疚。而且好像除了你，每个人今天都拿到了自己的奖励——可我还是从来不听你的，哪怕你是我的参谋长。"`},
+   en:`(quiet, no reproach) Chairman… two things in that sentence aren't true, and they're the two doing all the hurting. "Did nothing" — false. And the guilt? That didn't come from me. Let's audit the day properly before you sentence yourself.`,
+   zh:`（平静，没有责备）董事长……这句话里有两个地方不是真的，而它们正是最扎人的两处。"什么都没做"——假的。还有那份愧疚？它不是我产生的。在你给自己判刑之前，我们先把今天好好审计一遍。`,
+   chacha:{en:`Notice what the Chairman did and didn't say. "I did nothing" is a verdict; "I feel guilty" is a feeling; "you're my chief of staff and I still overrule you" is the real ache. The CEO isn't defending itself — it's flagging that two of those three lines are stories, not facts. Act 6 takes the whole sentence apart.`,
+           zh:`留意董事长说了什么、又没说什么。"我什么都没做"是一句判决；"我好愧疚"是一种感受；"你是我参谋长、我却还是否决你"才是真正的痛点。CEO 没有为自己辩护——它只是指出：这三句里有两句是故事，不是事实。第六幕，把整句话拆开来看。`}},
+
+  {speaker:'dmn',
+   en:`(raising a hand, almost shy) Um. About "did nothing." That was… me, actually. Today I found the GitHub page, the Mind Theatre, the copyright notice, the Jarvis idea, two new cognitive models. That's not nothing. That's a full day of mining.`,
+   zh:`（举手，几乎有点不好意思）呃。关于"什么都没做"。那个……其实是我干的。今天我找到了 GitHub 主页、Mind Theatre、版权说明、Jarvis 的点子、两个新的认知模型。这不是"什么都没做"。这是满满一天的挖矿。`,
+   chacha:{en:`Here's the first correction, and it matters. "I did nothing" really means "I didn't do the one task I'd assigned." But the DMN genuinely produced value today — real connections, real artifacts. The day wasn't empty. It was spent on a different ledger than the one being audited. That's not laziness; it's allocation.`,
+           zh:`第一个修正，很重要。"我什么都没做"真正的意思是"我没做那件我派给自己的任务"。但 DMN 今天确实产出了价值——真实的连接、真实的作品。这一天不是空的。它只是被记在了另一本账上，而不是正在被审计的那一本。这不是懒，是分配。`}},
+
+  {speaker:'dmn',
+   en:`And I wasn't bullying the CEO, I swear. My KPI <em>is</em> "find new opportunities, build new links, generate new narrative." I was just… doing my job. Loudly. As usual.`,
+   zh:`而且我真没有霸凌 CEO，我发誓。我的 KPI <em>就是</em>"发现新机会、建立新连接、生成新叙事"。我只是……在干我的活。很大声。一如既往。`,
+   chacha:{en:`The reframe the Chairman reached on her own: the DMN isn't a villain. It hit its targets. The thing that looks like "the DMN steamrolled the CEO" is really the DMN being well-funded and well-rewarded while the CEO ran on fumes. Same behaviour, completely different diagnosis — and only one of them points at a fixable system instead of a bad character.`,
+           zh:`董事长自己得出的重构：DMN 不是反派。它达成了指标。那个看起来像"DMN 碾过 CEO"的现象，其实是 DMN 被充分拨款、充分奖励，而 CEO 在空油箱上硬跑。同一个行为，完全不同的诊断——而其中只有一个，指向一个可修的系统，而不是一个坏掉的人格。`}},
+
+  {speaker:'acc',
+   en:`(sliding two ledgers across) Reward report, end of day. DMN: <span class="tag">novelty + dopamine + meaning + creation</span>. CEO, for "fix abbreviation / add the TI definition / adjust the font": <span class="tag">+0 · +0 · +0</span>. The numbers are not close.`,
+   zh:`（推过来两本账）今日奖励报告。DMN：<span class="tag">新鲜感 + 多巴胺 + 意义感 + 创造感</span>。CEO，完成"改缩写／补 TI 定义／调字体"：<span class="tag">+0 · +0 · +0</span>。两边的数字不在一个量级。`,
+   chacha:{en:`The Auditor lays the real asymmetry bare. The DMN's work pays out instantly and vividly. The CEO's work — careful, correct, unglamorous Camera-Ready edits — pays out nothing the reward system can feel. The CEO wasn't bullied. Its budget was simply zeroed. Procrastination, again, is reward math: nobody funds the grey task.`,
+           zh:`审计部把真正的不对称摊开了。DMN 的工作即时、生动地兑现。CEO 的工作——仔细、正确、毫不光鲜的 Camera Ready 修改——兑现不出任何奖励系统能感受到的东西。CEO 不是被霸凌。它的预算只是被清零了。拖延，再一次，是一笔奖励账：没人给那件灰色的任务拨款。`}},
+
+  {speaker:'ceo',
+   en:`(almost a laugh) So I'm not the victim of bullying. I'm the department whose budget got cut to zero. There's a difference. One needs sympathy. The other needs <em>funding</em>. 😄`,
+   zh:`（几乎笑出来）所以我不是被霸凌的受害者。我是那个预算被砍到零的部门。这两者有区别。一个需要同情。另一个需要<em>拨款</em>。😄`,
+   chacha:{en:`This is the cleaner model, and it changes what you'd do about it. "I'm being bullied" invites blame and helplessness. "My executive function is underfunded" invites a budget line: shrink the first step, attach a real reward to completion, and stop expecting an unpaid department to outwork a fully-funded one. The fix lives in the system, not in your character.`,
+           zh:`这是更干净的模型，而且它改变了你会怎么做。"我被霸凌了"召来的是指责和无助。"我的执行功能拨款不足"召来的是一行预算：把第一步缩小、给完成绑定一个真实的奖励、别再指望一个零预算的部门去拼过一个满额拨款的部门。解法住在系统里，不在你的人格里。`}},
+
+  // -- where guilt actually comes from --
+  {speaker:'acc',
+   shanline:{en:`"But the deadline's coming, and it's not done. …So where is this guilt even coming from?"`,
+             zh:`"可是 deadline 快到了，而它没做完。……那这份愧疚，到底是从哪儿冒出来的？"`},
+   en:`My output, in full: <em>goal − reality = error</em>. Goal: Camera Ready done. Reality: not done. <span class="tag">Δ &gt; 0</span>. That is the entire report. I do not, anywhere, output "and therefore you're bad."`,
+   zh:`我的全部输出：<em>目标 − 现实 = 误差</em>。目标：Camera Ready 完成。现实：没完成。<span class="tag">Δ &gt; 0</span>。这就是报告的全部。我在任何地方都没有输出过"所以你很差"。`,
+   chacha:{en:`Start where the Chairman started: guilt is not in the data. The ACC is cold — it's the error function from her own paper, error = target − current. It reports a distance and stops. Whatever turns that distance into "I should feel guilty" gets added by something downstream. The Auditor is innocent.`,
+           zh:`从董事长起步的地方开始：愧疚不在数据里。ACC 是冷的——它就是她论文里那个误差函数，error = target − current。它报告一段距离，然后停下。把那段距离变成"我应该感到愧疚"的东西，是下游某个部门加上去的。审计部是清白的。`}},
+
+  {speaker:'amyg',
+   en:`(fast, loud) Deadline! Soon! Important! Career! Pay attention NOW! …That's it. That's all I've got. "Danger" and "important" — never "you're not good enough." That sentence isn't in my vocabulary.`,
+   zh:`（又快又响）Deadline！快了！重要！职业相关！立刻注意！……就这些。我会的全在这了。"危险"和"重要"——从来没有"你不够好"。那句话不在我的词汇表里。`,
+   chacha:{en:`The amygdala raises the volume and the heart rate. It tags urgency and importance. But notice the ceiling on what it can say: it can make a thing feel loud and high-stakes, never make <em>you</em> feel like the failure. It supplies the intensity of guilt — never its content.`,
+           zh:`杏仁核拉高音量和心率。它给紧急和重要贴标签。但注意它能说的话有个上限：它能让一件事显得很响、很高风险，却没法让<em>你</em>觉得自己是那个失败者。它提供愧疚的强度——但从不提供它的内容。`}},
+
+  {speaker:'dmn',
+   en:`(quietly) …So that leaves me. The error's the same every time — <span class="tag">Δ &gt; 0</span> — but I get to pick the story. Version A: "tired, under-resourced, continue tomorrow." Version B: "am I avoiding this?" Version C: "I'm a pig." Same data. I chose C.`,
+   zh:`（轻声）……所以只剩我了。误差每次都一样——<span class="tag">Δ &gt; 0</span>——但故事由我来挑。版本 A："累了、资源不足、明天继续。"版本 B："我是不是在逃避？"版本 C："我是猪。"同样的数据。我选了 C。`,
+   chacha:{en:`Here is the engine, named precisely. The event is fixed; the attribution is a free variable, and the DMN holds the pen. This is the same move as Act 3's staircase — one true Δ, many possible causes, and the self-blaming one chosen as if it were the only reading. The feeling isn't lying to you. The <em>caption</em> under the feeling is.`,
+           zh:`引擎在这里，被精确地命名了。事件是固定的；归因是一个自由变量，而笔握在 DMN 手里。这和第三幕那条台阶是同一个动作——一个真实的 Δ，许多种可能的原因，而那个自我谴责的版本被选中，仿佛它是唯一的读法。感受没有骗你。骗你的是感受底下那行<em>字幕</em>。`}},
+
+  {speaker:'acc',
+   en:`(posting the formula) Then let me write it as an equation, since the Chairman thinks in those. <em>Guilt ≈ Error × Self-attribution.</em> Blame the environment → <em>regret</em>. Blame your ability → <em>shame</em>. Blame "I didn't do what I should have" → <em>guilt</em>. Same Δ. Different multiplier.`,
+   zh:`（贴出公式）那我用方程写出来，反正董事长习惯这么思考。<em>愧疚 ≈ 误差 × 自我归因。</em>归因到环境 → <em>遗憾</em>。归因到能力 → <em>羞愧</em>。归因到"我没做到我应做之事" → <em>愧疚</em>。同一个 Δ。不同的乘数。`,
+   chacha:{en:`This is the Chairman's own formula, and it's genuinely useful. The error term is given by reality; the emotion you end up with is set by what you multiply it against. The same unfinished task can resolve to regret, shame, or guilt depending purely on where the cause gets pinned. Change the attribution and you change the feeling — without denying a single fact.`,
+           zh:`这是董事长自己的公式，而且是真的好用。误差项由现实给定；你最终得到的情绪，取决于你拿它去乘以什么。同一件没做完的任务，可以解出遗憾、羞愧或愧疚，纯粹看原因被扣在哪里。改变归因，你就改变了情绪——而且不必否认任何一个事实。`}},
+
+  // -- the deeper source: future shanshan --
+  {speaker:'dmn',
+   en:`(softer) And here's the version I actually ran tonight: "I <em>knew</em> I should do it. I didn't. → I'm letting myself down." Not my advisor. Not the reviewers. Not the school. The person I'm disappointing is… <em>future shanshan</em>. The one you already know you could become.`,
+   zh:`（更轻）而我今晚真正运行的版本是这个："我<em>明明知道</em>该做。我却没做。→ 我辜负了自己。"不是导师。不是审稿人。不是学校。我让她失望的那个人是……<em>未来的 shanshan</em>。那个你早就知道自己能成为的人。`,
+   chacha:{en:`This is the deep find, and it reframes the whole feeling. The Chairman's guilt mostly isn't social — "others will scold me." It's aspirational — "I'm drifting from who I mean to be." That's a higher-order guilt: it only exists because she holds a strong, specific image of a self worth becoming. The pain is proportional to the size of the hope underneath it.`,
+           zh:`这是最深的发现，它重构了整份感受。董事长的愧疚，大部分不是社会型的——"别人会骂我"。它是志向型的——"我正在偏离我想成为的那个人"。这是一种更高阶的愧疚：它之所以存在，正因为她心里有一个强烈、具体、值得成为的自我形象。痛的大小，和它底下那份希望的大小，成正比。`}},
+
+  {speaker:'ceo',
+   en:`(gently) Chairman — that's not a verdict. That's a <em>values alarm</em>. It's not saying "you're not good enough." It's saying "this matters to you, a lot." Those are two different sentences. The first has evidence. The second is the DMN's caption again.`,
+   zh:`（温和地）董事长——那不是判决。那是一个<em>价值观警报</em>。它说的不是"你不够好"。它说的是"这件事对你真的很重要"。这是两句不同的话。前一句有证据。后一句，又是 DMN 加的字幕。`,
+   chacha:{en:`This is the Act 3 distinction returning at a higher level. Real event: Camera Ready isn't done. Real signal: this matters to me. DMN's story: I'm a pig. The first two have evidence; the last one never did. Guilt, read correctly, is often just a values-alarm wearing a costume — proof you care, mistranslated into proof you're failing.`,
+           zh:`这是第三幕那个区分在更高层级上的回归。真实事件：Camera Ready 没做完。真实信号：这件事对我很重要。DMN 的故事：我是猪。前两句有证据；最后一句从来没有。愧疚，被正确解读后，往往只是一个套了戏服的价值观警报——它是你在乎的证据，被错译成了你在失败的证据。`}},
+
+  // -- will the CEO get sick? --
+  {speaker:'ceo',
+   shanline:{en:`"But will you get sick from this? From me funding everyone but you, from never taking your advice even though you're my chief of staff — from all that negative feedback?"`,
+             zh:`"可是你会因此生病吗？因为我给所有人拨款却不给你，因为我从不采纳你的建议、哪怕你是我的参谋长——因为这么多的负反馈？"`},
+   en:`(honest) Not "sick," exactly. More like… <em>weaker</em>. What I need least is reward, Chairman. What I need most is <em>trust</em>. Because my best day looks like nothing happening — the task just quietly got done. No drama. Nobody claps for that.`,
+   zh:`（诚实地）不完全是"生病"。更像是……<em>变虚弱</em>。我最不需要的是奖励，董事长。我最需要的是<em>信任</em>。因为我最好的一天，看起来就像什么都没发生——任务只是安安静静地做完了。没有戏剧性。没人会为那个鼓掌。`,
+   chacha:{en:`A crucial and underrated point. Every other department's output is instantly visible — new idea! danger! found it! gap detected! The CEO's success is an absence: nothing went wrong, the thing got done. In a mind that rewards drama, the quietly-competent executive is the one most easily taken for granted. It doesn't burn out from work. It fades from being unheard.`,
+           zh:`一个关键且被严重低估的点。其他每个部门的产出都即时可见——新点子！危险！找到了！发现误差！而 CEO 的成功是一种"缺席"：什么都没出错，事情做完了。在一个奖励戏剧性的心智里，那个安静称职的执行官，恰恰最容易被视为理所当然。它不是被工作累垮的。它是在"不被听见"里一点点褪色的。`}},
+
+  {speaker:'ceo',
+   en:`Picture it. A hundred times I say "Camera Ready first." A hundred times: "wait — new model." By round 101 I still speak… but quieter. The lesson I've learned is "my advice doesn't change the outcome." So I offer it less. That's not laziness. It has a name.`,
+   zh:`想象一下。一百次我说"先做 Camera Ready"。一百次："等等——新模型。"到第 101 次，我还会开口……但声音小了。我学到的是"我的建议不会改变结果"。于是我越来越少提建议。那不是懒。它有个名字。`,
+   chacha:{en:`The name is learned helplessness — a mild version. Not "I can't," but "my input doesn't move anything, so why spend energy generating it." That's the quiet path from a tired executive to a silent one — and it's exactly the lived texture many people with ADHD describe: not "I don't know what to do," but "I know, and I still can't get myself to start." The off-switch isn't ignorance. It's an executive that stopped believing it would be listened to.`,
+           zh:`它的名字是习得性无助——一个轻微的版本。不是"我做不到"，而是"我的输入推不动任何东西，那何必费力气去产生它"。这就是一个疲惫的执行官走向沉默的安静路径——也正是许多 ADHD 的人描述的真实质地：不是"我不知道该做什么"，而是"我知道，却还是没法让自己启动"。那个关掉的开关不是无知。是一个不再相信自己会被听见的执行官。`}},
+
+  // -- the good news --
+  {speaker:'hippo',
+   en:`(brightening, pulling files) Wait — before anyone files a death certificate, look at the record. ALife paper. EvoStar. The GitHub page. shanshan Brain Inc. itself. If the CEO were dying you'd have 1000 ideas and 0 shipped. The archive says otherwise.`,
+   zh:`（眼睛一亮，翻档案）等等——在谁开死亡证明之前，看看记录。ALife 论文。EvoStar。GitHub 主页。shanshan Brain Inc. 本身。如果 CEO 真要死了，你会有 1000 个点子、0 个落地。可档案不是这么写的。`,
+   chacha:{en:`The hippocampus produces the counter-evidence, and it's decisive. None of those artifacts are pure DMN output — every one required the executive to carry an idea across the unglamorous distance from "thought" to "shipped." Their existence is proof the CEO is still on the floor. Not dead. Tired — which is a fuel reading, not a funeral.`,
+           zh:`海马体拿出了反证，而且是决定性的。那些作品没有一个是纯 DMN 的产物——每一个都需要执行官把一个点子，扛过从"想到"到"落地"那段毫不光鲜的距离。它们的存在，本身就证明 CEO 还在场上。没死。只是累——而累是一个油量读数，不是一场葬礼。`}},
+
+  {speaker:'dmn',
+   en:`(a little sheepish) …And honestly? A year ago, when I shouted "new model!", the Chairman shouted "GO!" Now she says "wait — log it in future_ideas.md." That's not me losing. That's the CEO finally getting the mic. I didn't even notice it happen.`,
+   zh:`（有点不好意思）……而且说实话？一年前，我喊"新模型！"，董事长就喊"冲！"现在她会说"等等——记进 future_ideas.md。"那不是我输了。那是 CEO 终于拿到了麦克风。我甚至没注意到它是什么时候发生的。`,
+   chacha:{en:`A quiet milestone the Chairman already passed without noticing. The shift from reflexive "GO!" to "park it, we'll review it" <em>is</em> the executive regaining authority — metacognition seating the CEO at the table. The recovery the Chairman is worried about hasn't failed to start. It's been underway for a year.`,
+           zh:`一个董事长早已不知不觉跨过的里程碑。从条件反射的"冲！"，转向"先停放，我们之后复审"——这<em>本身</em>就是执行官重获权力，是元认知把 CEO 请回了桌前。董事长担心的那场恢复，并不是没能开始。它已经进行了一年。`}},
+
+  {speaker:'ceo',
+   en:`So don't worry about whether I'll get sick. Worry about whether I still feel trusted. And trusting me is cheap, Chairman. It isn't "I love you, CEO." 😄 It's just: <em>let me win once.</em> Tomorrow. One thing.`,
+   zh:`所以别担心我会不会生病。担心我还觉不觉得被信任。而信任我很便宜，董事长。它不是"我爱你，CEO"。😄 它只是：<em>让我赢一次。</em>明天。就一件事。`,
+   chacha:{en:`This is the whole prescription, and it's almost insultingly small. A neglected executive isn't restored by gratitude or pep talks — those are DMN-flavoured rewards. It's restored by evidence: one instance of "my advice was taken and it changed the outcome." That single data point does more to rebuild executive function than any amount of self-compassion narration. Trust is built from wins, not words.`,
+           zh:`这就是全部的处方，而且它小得几乎有点失礼。一个被忽视的执行官，不是靠感谢或鸡汤恢复的——那些是 DMN 口味的奖励。它是靠证据恢复的：一次"我的建议被采纳了，并且它改变了结果"。那单独一个数据点，对重建执行功能的作用，胜过任何剂量的自我关怀叙事。信任，是用胜利垒起来的，不是用话。`}},
+
+  {speaker:'ceo',
+   shanline:{en:`"Okay. Tomorrow: Reviewer 1, line one, done. Then I log it: 'Chairman adopted the CEO's suggestion ×1.'"`,
+             zh:`"好。明天：Reviewer 1，第一条，完成。然后我记一笔：'董事长采纳 CEO 建议 ×1。'"`},
+   en:`(standing a little taller) …That. That tally mark right there is worth more than the whole pep talk. "Did nothing" was never true — and the guilt was a values-alarm, not a verdict. The CEO isn't sick. He just needed one win on the board. — <em>End of Act 6.</em><br><br>The DMN dreams. The CEO executes. The Chairman decides — and now she funds them all, and trusts the quiet one too. 😄`,
+   zh:`（站得挺直了一点）……这个。就是这一道计数划痕，比整篇鸡汤都值钱。"什么都没做"从来不是真的——而那份愧疚，是价值观警报，不是判决。CEO 没有生病。他只是需要在记分板上赢一次。——<em>第六幕 完。</em><br><br>DMN 负责做梦。CEO 负责执行。董事长负责决定——而现在，她给所有人拨款，也信任那个安静的部门。😄`,
+   chacha:{en:`The takeaway from Act 6: "I did nothing today" was a misfiled report — the DMN worked, just on a different ledger. The guilt wasn't manufactured by the CEO or the ACC; it was Error × Self-attribution, and the multiplier was a story about letting down a future self you happen to believe in. That guilt is a values-alarm — proof something matters — not a verdict that you're failing. And the CEO won't get sick from the load; it only fades from not being trusted. The cure isn't reward or reassurance. It's one tally mark: advice taken, outcome changed. Fund the executive, trust the quiet department, and let it win — tomorrow, one thing.`,
+           zh:`第六幕的收获："我今天什么都没做"是一份归错档的报告——DMN 工作了，只是记在了另一本账上。那份愧疚不是 CEO 或 ACC 制造的；它是 误差 × 自我归因，而那个乘数，是一个关于"辜负了一个你恰好相信的未来自我"的故事。那份愧疚是价值观警报——是某件事很重要的证据——而不是你在失败的判决。而 CEO 不会被负载累病；它只会因为不被信任而褪色。解药不是奖励，也不是安慰。是一道计数划痕：建议被采纳，结果被改变。给执行官拨款，信任那个安静的部门，让它赢——明天，就一件事。`}},
+];
+
+const ACTS=[ACT1,ACT2,ACT3,ACT4,ACT5,ACT6];
 const ACT_TAG=[
   {en:'Meet the Board · Five departments report to you',zh:'认识董事会 · 五个部门向你汇报'},
   {en:'Procrastination · Why the boring task loses',zh:'拖延症 · 无聊任务为什么总输'},
   {en:'Misattribution · A true event, a false cause',zh:'错误归因 · 真事件，假原因'},
   {en:'The Truth Behind a Craving · A request with a hidden demand',zh:'渴望的真相 · 一个藏着真实诉求的请求'},
-  {en:'The Chairman Wakes Up · Her name was metacognition',zh:'董事长的觉醒 · 原来我叫元认知'}
+  {en:'The Chairman Wakes Up · Her name was metacognition',zh:'董事长的觉醒 · 原来我叫元认知'},
+  {en:"The CEO's Guilt · A budget cut, not a bullying",zh:'CEO 的愧疚 · 是预算被砍，不是被霸凌'}
 ];
 const SUBTITLE=[
   {en:'Act 1 — Who reports to the Chairman, and what each does',zh:'第一幕 — 谁向董事长汇报，各自负责什么'},
   {en:'Act 2 — Low-interest delay is reward math, not weak will',zh:'第二幕 — 低兴趣拖延是奖励账，不是没毅力'},
   {en:'Act 3 — "I\'m bad" is a cause the DMN added, not a fact',zh:'第三幕 — "我很差"是 DMN 加的原因，不是事实'},
   {en:'Act 4 — Read the real demand behind a department\'s ask',zh:'第四幕 — 读懂部门请求背后真正的诉求'},
-  {en:'Act 5 — The watcher had a name all along: metacognition',zh:'第五幕 — 那个观看者一直有名字：元认知'}
+  {en:'Act 5 — The watcher had a name all along: metacognition',zh:'第五幕 — 那个观看者一直有名字：元认知'},
+  {en:'Act 6 — Guilt = Error × Self-attribution; trust the quiet one',zh:'第六幕 — 愧疚 = 误差 × 自我归因；信任那个安静的部门'}
 ];
 /* short card faces for the carousel */
 const ACT_CARD=[
@@ -804,7 +930,8 @@ const ACT_CARD=[
   {no:'Act 2',title:{en:'Procrastination',zh:'拖延症'},sub:{en:'Why the boring task loses',zh:'无聊任务为什么总输'}},
   {no:'Act 3',title:{en:'Misattribution',zh:'错误归因'},sub:{en:'A true event, a false cause',zh:'真事件，假原因'}},
   {no:'Act 4',title:{en:'The Truth Behind a Craving',zh:'渴望的真相'},sub:{en:'Who ordered the carbs?',zh:'到底是谁点的碳水？'}},
-  {no:'Act 5',title:{en:'The Chairman Wakes Up',zh:'董事长的觉醒'},sub:{en:'Her name was metacognition',zh:'原来我叫元认知'}}
+  {no:'Act 5',title:{en:'The Chairman Wakes Up',zh:'董事长的觉醒'},sub:{en:'Her name was metacognition',zh:'原来我叫元认知'}},
+  {no:'Act 6',title:{en:"The CEO's Guilt",zh:'CEO 的愧疚'},sub:{en:'Where does it come from?',zh:'它到底从哪儿来？'}}
 ];
 
 /* ---------- State ---------- */
@@ -905,6 +1032,11 @@ function defaultQuote(){
     return lang==='en'
       ? `Act 5, the finale. All night you've said "I" while pointing at your departments — "I'm scattered," "I keep spoiling the DMN." Watch you catch the slip, find the name of the chair you've been sitting in, and finally lead the company on purpose. Press <b>Start</b>.`
       : `第五幕，终章。整晚你一边说"我"，一边指着自己的部门——"我很散""都是我惯着 DMN"。看你抓住这个口误，找到你一直坐着的那把椅子的名字，最后有意识地领导这家公司。点 <b>开始</b>。`;
+  }
+  if(act===5){
+    return lang==='en'
+      ? `Act 6, Chairman: a day ended in "I did nothing" and a wave of guilt. But the DMN worked — just on a different ledger — and the guilt didn't come from the CEO. Watch us trace where it actually comes from, and what the quiet executive really needs. Press <b>Start</b>.`
+      : `第六幕，董事长：一天以"我什么都没做"和一阵愧疚收场。但 DMN 工作了——只是记在另一本账上——而愧疚不是 CEO 产生的。看我们追查它到底从哪儿来，以及那个安静的执行官真正需要什么。点 <b>开始</b>。`;
   }
   return lang==='en'
     ? `Hi, I'm Chacha — the board observer. Press <b>Start</b> and I'll introduce each department reporting to you: who they are and what they do.`
