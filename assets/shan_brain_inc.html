@@ -245,6 +245,124 @@
     .seat{min-width:60px}.av{width:50px;height:50px}.av svg{width:32px;height:32px}
     .pane{width:66px;height:46px}.line{font-size:14.5px}
   }
+  /* =====================================================================
+     CUT SWITCHER — Main season (Acts 1–6) / 失恋那件事 · About the Breakup (Act 7)
+     ===================================================================== */
+  :root{ --little:#ef8f74; }
+  .cuts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+  .cutbtn{
+    border:2.5px solid var(--line);border-radius:14px;background:var(--panel);color:var(--ink);
+    box-shadow:3px 3px 0 var(--shadow);padding:9px 13px;text-align:left;cursor:pointer;
+    font-family:inherit;display:flex;flex-direction:column;gap:2px;min-width:0;
+    transition:background .18s,color .18s,transform .12s;
+  }
+  .cutbtn:active{transform:translateY(1px)}
+  .cutbtn .ck{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--chacha)}
+  body.zh .cutbtn .ck{letter-spacing:.12em}
+  .cutbtn .ct{font-size:clamp(13px,3vw,16px);font-weight:700;letter-spacing:-.01em;line-height:1.2}
+  .cutbtn.on{background:var(--ink);color:var(--paper)}
+  .cutbtn.on .ck{color:rgba(245,239,226,.72)}
+  .cutbtn.br.on{background:var(--shan);color:#fff}
+  .cutbtn.br.on .ck{color:rgba(255,255,255,.85)}
+
+  /* The breakup cut gets its own accent colour (the Chairman's pink) */
+  body.cut-breakup .actcard.on{background:var(--shan);border-color:var(--shan)}
+  body.cut-breakup .dot.on{background:var(--shan);border-color:var(--shan)}
+  body.cut-breakup .progress>i{background:var(--shan)}
+  body.cut-breakup .btn:not(.ghost){background:var(--shan)}
+  body.cut-breakup .pane{background:linear-gradient(160deg,#ffd6e2,#fff1e4)}
+  body.cut-breakup .hint b{color:var(--shan)}
+
+  /* "Show whole scene" — only in the breakup cut */
+  #allBtn{display:none}
+  body.cut-breakup #allBtn{display:inline-block}
+
+  /* Little Shanshan's seat: hidden in the main season, appears in Act 7 Scene 4 */
+  .seat.little{display:none}
+  body.cut-breakup .seat.little.show{display:block;animation:littleIn .55s cubic-bezier(.34,1.56,.64,1)}
+  body.cut-breakup .seat.little.show.active{animation:none}
+  @keyframes littleIn{0%{opacity:0;transform:scale(.6)}100%{opacity:1;transform:scale(1)}}
+  .seat.little .role{color:var(--little)}
+  .av.little{background:#fdeae4}
+  .badge.little{background:#fdeae4}
+
+  /* ---- Script-style transcript (breakup cut) ---- */
+  body.cut-breakup .stagebox.capped{
+    max-height:min(62vh,560px);overflow-y:auto;overscroll-behavior:contain;
+    scrollbar-width:thin;scrollbar-color:rgba(42,35,66,.3) transparent;
+    padding:2px 6px 10px 2px;margin-right:-4px;
+  }
+  .fresh{opacity:0;transform:translateY(10px);animation:rise .35s forwards}
+
+  .tcard{
+    border:3px solid var(--line);border-radius:16px;padding:18px 18px 16px;
+    background:linear-gradient(170deg,#fff3f6,var(--panel) 62%);
+    box-shadow:5px 5px 0 var(--shadow);text-align:center;margin-bottom:10px;
+  }
+  .tcard-eye{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--shan)}
+  body.zh .tcard-eye{letter-spacing:.1em}
+  .tcard-no{font-family:'Caveat',cursive;font-size:25px;font-weight:700;color:var(--chacha);margin-top:8px;transform:rotate(-2deg)}
+  body.zh .tcard-no{font-family:'Noto Sans SC',sans-serif;font-size:14px;transform:none;letter-spacing:.1em}
+  .tcard-title{font-size:clamp(19px,4.4vw,25px);font-weight:700;letter-spacing:-.01em;line-height:1.28;margin-top:3px}
+  .tcard-theme{
+    margin:14px auto 2px;max-width:540px;font-size:14.5px;line-height:1.55;color:#5a2f3c;
+    background:#fdf1f4;border:2px dashed var(--shan);border-radius:12px;padding:10px 14px;
+  }
+  .tcard-theme .k{display:block;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--shan);margin-bottom:3px}
+  .tcard-cast-h{font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--chacha);margin:16px 0 8px}
+  .tcard-cast{list-style:none;text-align:left;display:grid;gap:9px;max-width:560px;margin:0 auto}
+  .tcard-cast li{display:flex;gap:10px;align-items:flex-start}
+  .tcard-cast .badge{margin-top:1px}
+  .tc-name{display:block;font-weight:700;font-size:13.5px;line-height:1.3}
+  .tc-desc{display:block;font-size:13px;line-height:1.5;color:#4a4460}
+  .tcard-foot{font-size:11.5px;color:var(--chacha);font-style:italic;margin-top:14px}
+
+  .sdir{
+    font-style:italic;font-size:13.5px;line-height:1.6;color:#5f5975;
+    margin:12px 6px;padding:6px 12px;border-left:3px solid rgba(107,101,128,.4);
+    background:rgba(107,101,128,.07);border-radius:0 10px 10px 0;
+  }
+  body.zh .sdir{font-style:normal}
+  .sline{
+    border:2.5px solid var(--line);border-left-width:7px;border-radius:14px;
+    padding:9px 13px 10px;background:var(--panel);box-shadow:3px 3px 0 var(--shadow);
+    margin:10px 12% 10px 0;
+  }
+  .sline.me{margin:10px 0 10px 12%}
+  .sline.shan{border-left-color:var(--shan);background:#fdf1f4}
+  .sline.little{border-left-color:var(--little);background:#fff3ee}
+  .sline.ceo{border-left-color:var(--ceo)}
+  .sline.hippo{border-left-color:var(--hippo)}
+  .sline.dmn{border-left-color:var(--dmn)}
+  .sline.amyg{border-left-color:var(--amyg)}
+  .sline.acc{border-left-color:var(--acc)}
+  .sline.chacha{border-style:dashed;border-left-style:solid;border-left-color:var(--chacha);background:#f4f2f9}
+  .swho2{display:flex;align-items:center;gap:7px;margin-bottom:4px;flex-wrap:wrap}
+  .swho2 .badge{width:20px;height:20px}
+  .swho2 .badge svg{width:13px;height:13px}
+  .sname{font-weight:700;font-size:13px}
+  .snote{font-size:12px;color:var(--chacha);font-style:italic}
+  .stxt{font-size:15px;line-height:1.62}
+  .stxt b{color:#b14a68}
+
+  .snarr{
+    margin:16px 0 8px;background:#fff;border:2.5px dashed var(--chacha);border-radius:14px;
+    padding:12px 16px 13px;box-shadow:3px 3px 0 var(--shadow);
+  }
+  .snarr-h{display:flex;align-items:center;gap:7px;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--chacha);margin-bottom:6px}
+  .snarr-h .badge{width:20px;height:20px}
+  .snarr-h .badge svg{width:13px;height:13px}
+  .snarr-t{font-size:14.5px;line-height:1.75;font-style:italic;color:#3b3550}
+  body.zh .snarr-t{font-style:normal}
+  .send{text-align:center;margin:18px 0 6px;font-family:'Caveat',cursive;font-weight:700;font-size:28px;color:var(--shan)}
+  body.zh .send{font-family:'Noto Sans SC',sans-serif;font-size:17px;letter-spacing:.3em}
+
+  @media (max-width:520px){
+    .sline{margin-right:6%}.sline.me{margin-left:6%}
+    .stxt{font-size:14.5px}
+    .cutbtn{padding:8px 10px}
+  }
+
   @media (prefers-reduced-motion: reduce){
   *{
     animation:none!important;
@@ -252,7 +370,9 @@
   }
   .bubble,
   .shanline,
-  .chacha-quote{
+  .chacha-quote,
+  .fresh,
+  .tcard{
     opacity:1!important;
     transform:none!important;
   }
@@ -267,7 +387,7 @@
   <div class="stage" style="min-width:0">
     <div class="topbar">
       <div>
-        <div class="eyebrow" data-en="Five departments · one Chairman" data-zh="五个部门 · 一位董事长">Five departments · one Chairman</div>
+        <div class="eyebrow" id="eyebrow" data-en="Five departments · one Chairman" data-zh="五个部门 · 一位董事长">Five departments · one Chairman</div>
         <div class="title">shanshan Brain <span class="inc">Inc.</span></div>
         <div class="subtitle" id="subtitle"></div>
       </div>
@@ -275,6 +395,17 @@
         <button id="enBtn" class="on" onclick="setLang('en')">EN</button>
         <button id="zhBtn" onclick="setLang('zh')">中文</button>
       </div>
+    </div>
+
+    <div class="cuts" role="tablist" aria-label="cuts">
+      <button class="cutbtn" id="cut-main" role="tab" onclick="setCut('main')">
+        <span class="ck" data-en="Main season" data-zh="正篇">Main season</span>
+        <span class="ct" data-en="Acts 1–6" data-zh="第一至六幕">Acts 1–6</span>
+      </button>
+      <button class="cutbtn br" id="cut-breakup" role="tab" onclick="setCut('breakup')">
+        <span class="ck" data-en="A cut of its own · Act 7" data-zh="独立篇章 · 第七幕">A cut of its own · Act 7</span>
+        <span class="ct" data-en="About the Breakup" data-zh="失恋那件事">About the Breakup</span>
+      </button>
     </div>
 
     <div class="actnav">
@@ -293,6 +424,7 @@
       <div class="controls">
         <button class="btn" id="nextBtn" onclick="next()">▶ <span id="nextLabel"></span></button>
         <button class="btn ghost" id="restartBtn" onclick="restart()" data-en="Restart" data-zh="重播">Restart</button>
+        <button class="btn ghost" id="allBtn" onclick="showAll()" data-en="Show whole scene" data-zh="全场展开">Show whole scene</button>
         <div class="progress"><i id="bar"></i></div>
         <span class="counter" id="counter">0 / 0</span>
       </div>
@@ -316,7 +448,7 @@
 
   <div class="hint">
     <span data-en="Tap" data-zh="点击">Tap</span> <b data-en="Next" data-zh="下一步">Next</b>
-    <span data-en="· space / → advances · click a character to jump · use the ‹ › arrows or dots to change act" data-zh="· 空格 / → 推进 · 点角色头像可跳到它 · 用 ‹ › 箭头或圆点切换幕">· space / → advances · click a character to jump · use the ‹ › arrows or dots to change act</span>
+    <span data-en="· space / → advances · click a character to jump · ‹ › arrows or dots change act / scene · switch between the main season and “About the Breakup” at the top" data-zh="· 空格 / → 推进 · 点角色头像可跳到它 · 用 ‹ › 箭头或圆点切换幕 / 场 · 顶部可在「正篇」和「失恋那件事」之间切换">· space / → advances · click a character to jump · ‹ › arrows or dots change act / scene · switch between the main season and “About the Breakup” at the top</span>
   </div>
 
   <!-- BOTTOM: copyright / legal -->
@@ -934,14 +1066,309 @@ const ACT_CARD=[
   {no:'Act 6',title:{en:"The Chairman's Guilt",zh:'董事长的愧疚'},sub:{en:'Where does it come from?',zh:'它到底从哪儿来？'}}
 ];
 
+/* =====================================================================
+   CUT · 失恋那件事 / About the Breakup  (Act 7, a cut of its own)
+   A script-style act: each tap reveals the next line or stage direction,
+   and the scene builds up like a page of a play.
+   ===================================================================== */
+
+/* Little Shanshan — appears in this cut only */
+ICON.little=`<svg viewBox="0 0 40 40" fill="none" stroke="#1a1530" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="12.5" r="4.6" fill="#ef8f74"/><circle cx="29.5" cy="12.5" r="4.6" fill="#ef8f74"/><circle cx="20" cy="22.5" r="11" fill="#fdeae4"/><path d="M9.3 20.8c.8-6.2 5.4-9.8 10.7-9.8s9.9 3.6 10.7 9.8c-2.4-2.1-4.8-3.2-6.4-3.2-2.6 1.7-5.8 1.7-8.6 0-1.6 0-4 1.1-6.4 3.2z" fill="#ef8f74"/><circle cx="16" cy="23.6" r="1.5" fill="#1a1530" stroke="none"/><circle cx="24" cy="23.6" r="1.5" fill="#1a1530" stroke="none"/><circle cx="13" cy="27" r="1.7" fill="#f7b2a2" stroke="none"/><circle cx="27" cy="27" r="1.7" fill="#f7b2a2" stroke="none"/><path d="M18 28c1.2 1 2.8 1 4 0"/></svg>`;
+CAST.splice(1,0,{id:'little',role:{en:'Little Shanshan',zh:'小姗姗'},org:{en:'Sometimes just wants a hug',zh:'有时只想被抱抱'}});
+
+const D=(zh,en,extra)=>Object.assign({s:'dir',zh,en},extra||{});
+const S=(s,zh,en,nzh,nen)=>({s,zh,en,note:nzh?{zh:nzh,en:nen}:null});
+const N=(zh,en)=>({s:'narr',zh,en});
+
+const BR_NAME={
+  shan:{en:'Shanshan',zh:'姗姗'}, little:{en:'Little Shanshan',zh:'小姗姗'},
+  ceo:{en:'Prefrontal Cortex',zh:'前额叶'}, amyg:{en:'Amygdala',zh:'杏仁核'},
+  hippo:{en:'Hippocampus',zh:'海马体'}, dmn:{en:'DMN',zh:'DMN'}, acc:{en:'ACC',zh:'ACC'},
+  chacha:{en:'Chacha',zh:'查查'}
+};
+const BR_THEME={en:`I'll still miss you — and I'm giving my life back to myself.`,zh:`我还会想你，也正在把生活还给自己。`};
+const BR_SUB={en:`Act 7 — I'll still miss you, and I'm giving my life back to myself`,zh:`第七幕 — 我还会想你，也正在把生活还给自己`};
+const BR_CASTLIST=[
+  {id:'shan', name:{zh:'姗姗｜董事长',en:'Shanshan | Chairman'},
+   desc:{zh:'已经知道自己不想复合，偶尔仍想念，仍生气，也开始好奇一个人的生活。',
+         en:`Already knows she doesn't want to get back together. Still misses him sometimes, is still angry, and is starting to get curious about life on her own.`}},
+  {id:'ceo', name:{zh:'前额叶 DLPFC｜执行官',en:'Prefrontal Cortex (DLPFC) | Executive Officer'},
+   desc:{zh:'负责听完各方意见，把今天能做的事排出来。知道董事长的心情不一定跟得上决定。',
+         en:`Hears every department out, then lays out what can be done today. Knows the Chairman's feelings won't always keep pace with her decisions.`}},
+  {id:'amyg', name:{zh:'杏仁核｜风控官',en:'Amygdala | Risk Officer'},
+   desc:{zh:'非常在乎董事长。最近一听见“我又想他了”，就想启动全公司应急预案。',
+         en:`Cares about the Chairman enormously. Lately, the moment it hears "I'm missing him again," it wants to trigger the company-wide emergency plan.`}},
+  {id:'hippo', name:{zh:'海马体｜记忆总监',en:'Hippocampus | Head of Memory'},
+   desc:{zh:'负责搬来旧日子的片段。尚未学会在老板准备睡觉时轻拿轻放。',
+         en:`In charge of hauling in pieces of the old days. Has not yet learned to tread softly when the boss is trying to fall asleep.`}},
+  {id:'dmn', name:{zh:'DMN｜点子总监兼编剧',en:'DMN | Head of Ideas & Screenwriter'},
+   desc:{zh:'筹备过《事业登顶，前任悔不当初》，现在也想写写她自己的生活。',
+         en:`Once developed "Top of Her Field: The Ex Who Regretted It." Now wants to write about her own life, too.`}},
+  {id:'acc', name:{zh:'ACC｜审计部',en:'ACC | Auditor'},
+   desc:{zh:'带着七年的账本，正在学习哪些账可以不再算。',
+         en:`Carries a seven-year ledger, and is learning which accounts no longer need settling.`}},
+  {id:'chacha', name:{zh:'查查｜董事会观察员',en:'Chacha | Board Observer'},
+   desc:{zh:'陪董事长听懂每个部门的声音，也给没想明白的感受留一个座位。',
+         en:`Helps the Chairman understand every department's voice, and saves a seat for feelings that haven't been figured out yet.`}},
+];
+
+const BREAKUP=[
+/* ---------- 序场 / Prologue ---------- */
+{no:{zh:'序场',en:'Prologue'},
+ title:{zh:'三份报告同时有效',en:'Three Reports, All Valid'},
+ full:{zh:'三份报告同时有效',en:'Three reports, all valid at once'},
+ sub:{zh:'想念 · 不甘心 · 不想复合',en:'Missing him · Still stung · Not going back'},
+ note:{zh:`第七幕单独成篇。这一次没有要修的 bug——董事长在失恋，每个部门都在学着陪她。先看序场：三份看起来互相矛盾的报告，同时摆上了桌。点 <b>开始</b>。`,
+       en:`Act 7 stands as a cut of its own. There's no bug to fix this time — the Chairman is going through a breakup, and every department is learning how to keep her company. First, the prologue: three reports that seem to contradict each other land on the table at once. Press <b>Start</b>.`},
+ beats:[
+  D(`会议室。杏仁核抱着三份报告跑进来，领带挂在肩上。`,`The boardroom. The Amygdala rushes in clutching three reports, its tie slung over one shoulder.`),
+  S('amyg',`出事了！\n董事长前一分钟说不想复合，后一分钟又想他！\n然后她还说，要在事业上超过他，让他后悔！\n这到底执行哪一份？！`,
+    `We have a situation!\nOne minute the Chairman says she doesn't want to get back together, the next minute she misses him!\nAnd then she says she's going to outdo him in her career and make him regret it!\nWhich one are we supposed to execute?!`),
+  S('ceo',`先别合并。\n你把三件事塞进一个单选题了。`,`Don't merge them yet.\nYou've crammed three different things into one pick-one question.`,`接过报告`,`taking the reports`),
+  S('hippo',`我刚才放了一小段过去的日子。`,`I just played a little clip of the old days.`,`抱着箱子经过`,`passing by with a box`),
+  S('amyg',`为什么还放？不是已经决定结束了吗？`,`Why are you still playing those? Didn't we already decide it's over?`),
+  S('hippo',`七年的东西。\n我们连旧会议纪要都还没整理完，你要求感情档案即刻清空？`,`That's seven years of material.\nWe haven't even finished filing the old meeting minutes, and you want the relationship archive emptied immediately?`),
+  S('dmn',`第三份是我写的。\n研究做得很好，事业很成功，他站在远处，终于意识到——`,`The third one's mine.\nHer research is going brilliantly, her career is taking off, he's standing somewhere off in the distance, and he finally realises—`,`举手`,`raising a hand`),
+  S('ceo',`等一下，让董事长自己说。`,`Hold on. Let the Chairman speak for herself.`),
+  S('shan',`我确实还想让他后悔。\n我也确实会想他。\n但我心底不想再和他在一起了。`,`I do still want him to regret it.\nAnd I do still miss him.\nBut deep down, I don't want to be with him anymore.`),
+  D(`前额叶把三份报告并排放下。`,`The Prefrontal Cortex lays the three reports down side by side.`),
+  S('ceo',`那就先这样记录。\n想念。不甘心。不想复合。\n三个都在。`,`Then that's what goes on the record for now.\nMissing him. Still stung. Not going back.\nAll three are here.`),
+  S('acc',`本次会议不要求当事人立刻提供一种统一、整齐、适合对外发布的心情。`,`This meeting does not require the person concerned to immediately provide a single, tidy feeling suitable for public release.`),
+  S('amyg',`所以……我不用因为她想他，就撤回她已经做出的决定？`,`So… I don't have to retract a decision she's already made just because she misses him?`,`慢慢坐下`,`slowly sitting down`),
+  S('shan',`嗯。\n我今天想说的是“我很难过”。\n先听到这里就好。`,`Mm.\nWhat I want to say today is "I'm really sad."\nThat's all you need to hear for now.`),
+  N(`她允许自己把几句话都说完。\n至于这些感受各自占多少、什么时候会变轻，不急着在今晚判定。\n眼前的决定和仍在翻涌的心情，可以暂时走在不同的速度里。`,
+    `She let herself finish every one of those sentences.\nHow much room each feeling takes up, and when any of them will get lighter — none of that has to be ruled on tonight.\nThe decision in front of her and the feelings still churning can, for now, move at different speeds.`),
+ ]},
+
+/* ---------- 第一场 / Scene 1 ---------- */
+{no:{zh:'第一场',en:'Scene 1'},
+ title:{zh:'等他后悔的颁奖典礼',en:'Waiting for His Regret'},
+ full:{zh:'那场还在等他后悔的颁奖典礼',en:'The award ceremony still waiting for his regret'},
+ sub:{zh:'镜头转回台上的我',en:'Turn the camera back to me'},
+ note:{zh:`第一场：DMN 筹备了很久的一场戏——她走上领奖台，镜头切到他。看看彩带为什么迟迟落不下来。点 <b>开始</b>。`,
+       en:`Scene 1: a show the DMN has been staging for a long time — she walks up to the podium, and the camera cuts to him. Watch why the confetti never quite falls. Press <b>Start</b>.`},
+ beats:[
+  D(`DMN 把投影拉下来。画面中，姗姗做出了自己满意的研究，拿到了很想要的机会。彩带已经挂好。`,`The DMN pulls down the projector screen. On it, Shanshan has produced research she's proud of and landed an opportunity she really wanted. The confetti is already rigged.`),
+  S('dmn',`这一段保证好看。\n你走上台，事业有成，整个人都在发光。\n然后镜头切到他——`,`This part is guaranteed to be good.\nYou walk on stage, career soaring, absolutely glowing.\nAnd then the camera cuts to him—`),
+  S('shan',`他后悔了？`,`He regrets it?`),
+  S('dmn',`对！这就是高潮！`,`Yes! That's the climax!`),
+  S('acc',`如果他没看见呢？`,`What if he doesn't see it?`,`翻剧本`,`flipping through the script`),
+  S('dmn',`那就……等他看见。`,`Then we… wait until he sees it.`),
+  S('acc',`如果他看见了，但没有告诉我们他的感受呢？`,`What if he sees it, but never tells us how he feels?`),
+  S('dmn',`再等一下。`,`Then we wait a bit longer.`),
+  S('ceo',`她已经取得的成果，为什么要在后台等一个我们拿不到的回执？`,`Why should what she's already achieved sit backstage, waiting for a receipt we're never going to get?`),
+  D(`投影里的姗姗站在台上。彩带迟迟没有落下。`,`On the screen, Shanshan stands on stage. The confetti still hasn't fallen.`),
+  S('shan',`我承认，这个画面让我解气。\n我想让他知道，他失去了一个值得珍惜的人。`,`I admit it — this scene is satisfying.\nI want him to know he lost someone worth treasuring.`,`看了很久`,`after watching for a long time`),
+  S('chacha',`嗯。\n这个愿望，今天也可以说出来。`,`Mm.\nYou're allowed to say that wish out loud today, too.`),
+  S('shan',`可是我不想以后每次做成一件事，第一件事都是查他有没有看见。`,`But I don't want the first thing I do, every time I pull something off, to be checking whether he saw it.`),
+  S('ceo',`那这场庆祝，可以由你开始。`,`Then this celebration can start with you.`),
+  S('shan',`我昨天想明白了一点。\n他以后的好坏与我再无关。我不需要一直和他较劲。\n事业也好，减肥也好，我自己有野心，我自己想要。`,`Yesterday, something clicked.\nHow his life goes from here has nothing to do with me anymore. I don't need to keep competing with him.\nMy career, losing weight — I have my own ambitions. I want these things for myself.`),
+  S('dmn',`那我把他那个镜头删了？`,`So should I cut his shot?`),
+  S('shan',`先把镜头转回来。\n让我看看台上的我。`,`Turn the camera back first.\nLet me look at the me who's up on that stage.`),
+  D(`画面转回。她终于看清自己手里的成果。`,`The shot swings back. At last she can see clearly what she's holding in her own hands.`),
+  S('shan',`这件事，即使他永远不知道，我也会想做。`,`Even if he never finds out, this is something I'd want to do.`),
+  S('acc',`不再等待他的感想。`,`No longer awaiting his reaction.`,`在“庆祝条件”一栏划去一行`,`striking a line from the "Conditions for Celebrating" column`),
+  S('amyg',`如果明天她又想跟他较劲呢？`,`What if tomorrow she wants to compete with him again?`),
+  S('shan',`提醒我回来看看这段。\n别骂我。\n我可能还得练几次。`,`Remind me to come back and watch this part.\nDon't scold me.\nI might need a few more rounds of practice.`),
+  N(`她没有逼自己立刻消除不甘心。\n她只是在那份不甘心旁边，找到了另一份同样真实的愿望：这项研究、这份工作、这个未来，她自己也想要。\n接下来的路，可以一点点由这份愿望来带。`,
+    `She didn't force herself to stop feeling stung right away.\nShe simply found, right beside the sting, another wish just as real: this research, this job, this future — she wants them for herself, too.\nThe road ahead can, little by little, be led by that wish.`),
+ ]},
+
+/* ---------- 第二场 / Scene 2 ---------- */
+{no:{zh:'第二场',en:'Scene 2'},
+ title:{zh:'“旺自己”项目立项',en:'Be My Own Lucky Charm'},
+ full:{zh:'“旺自己”项目首次立项',en:'Project "Be My Own Lucky Charm" is approved'},
+ sub:{zh:'当代的“夫”，也可以是事业',en:'The "partner" can be my career'},
+ note:{zh:`第二场：海马体翻出一摞“这些年我们学会的事”。一个新项目要立项了。点 <b>开始</b>。`,
+       en:`Scene 2: the Hippocampus digs out a stack of files labelled "Things We Learned Over the Years." A new project is about to be approved. Press <b>Start</b>.`},
+ beats:[
+  D(`海马体搬来一摞文件，最上面写着“这些年我们学会的事”。`,`The Hippocampus hauls in a stack of files. The one on top reads: "Things We Learned Over the Years."`),
+  S('hippo',`发现一批可以继续使用的能力。\n照顾人，留意细节，支持别人的事业，安排生活，遇到困难一起想办法。`,`Found a batch of skills still fit for use.\nTaking care of people, noticing details, supporting someone else's career, organising daily life, working things out together when it gets hard.`),
+  S('shan',`我昨天突然想到，我是很旺夫的人。\n那当代的“夫”，也可以是我的事业呀。`,`Yesterday it suddenly hit me: I'm the kind of woman who's a lucky charm for her man.\nWell, these days, who says the "man" can't be my career?`),
+  S('dmn',`公司转型？`,`A company pivot?`,`眼睛发亮`,`eyes lighting up`),
+  S('shan',`我那么多年没单身过，还从来没有试过“旺自己”是什么感觉。`,`I haven't been single in so many years. I've never once tried what it feels like to be my own lucky charm.`),
+  D(`前额叶抽出一张空白项目纸。`,`The Prefrontal Cortex pulls out a blank project form.`),
+  S('ceo',`项目名称？`,`Project name?`),
+  S('shan',`旺自己。`,`Be My Own Lucky Charm.`),
+  S('acc',`具体投入？`,`Resources committed?`),
+  S('shan',`以前我会认真想，他累不累，遇到难题怎么办，需要什么支持。\n以后也这么问问我自己。`,`I used to think it through so carefully — is he tired, what will he do about this problem, what kind of support does he need.\nFrom now on, I'll ask myself those questions, too.`),
+  S('hippo',`我这里有记录。\n你会陪别人慢慢学一件事，不会因为他一开始不会，就说他没救了。`,`I have records of this.\nYou'd stay with someone while they slowly learned something. You never decided they were hopeless just because they couldn't do it at first.`),
+  S('ceo',`那下次你学 PyTorch，遇到一段没看懂的代码，也用这个口气跟自己说话。`,`Then next time you're learning PyTorch and hit a block of code you don't understand, talk to yourself in that same tone.`),
+  S('shan',`好。\n不能把最苛刻的那一份专门留给我。`,`Okay.\nI can't keep the harshest version reserved just for me.`,`笑`,`laughing`),
+  S('dmn',`那我们研究 Agentic AI，做项目，找好工作，每天高效十二小时，三年之内——`,`So we research Agentic AI, build projects, land a great job, twelve productive hours a day, and within three years—`,`飞快写计划`,`scribbling a plan at top speed`),
+  S('acc',`等一下。\n你这份“旺自己”方案里，受益人什么时候吃饭？`,`Hold on.\nIn this "Be My Own Lucky Charm" plan of yours — when does the beneficiary get to eat?`),
+  S('dmn',`……我翻一下。`,`…Let me check.`),
+  S('shan',`我想看看自己的潜力在哪里。\n但我也想知道，我喜欢什么，什么让我舒服，哪些日子我愿意再过一次。`,`I want to see where my potential lies.\nBut I also want to know what I like, what makes me comfortable, and which days I'd happily live all over again.`),
+  S('ceo',`都写进去。\n这个项目包含你的事业，也包含下班以后的你。`,`Put it all in.\nThis project covers your career — and it covers the you after work, too.`),
+  N(`“旺自己”沿用了她原本就有的耐心、热烈和支持人的本事。\n她开始把自己也放进那份关心里。\n做成一件事会开心，做得慢一点时，也有人肯坐下来陪她——她自己可以成为其中一个。`,
+    `"Be My Own Lucky Charm" runs on what she already had: her patience, her ardour, and her knack for backing people up.\nShe's starting to include herself in that care.\nWhen something works out, she gets to be happy; when things go slowly, someone is still willing to sit down beside her — and she can be one of those people herself.`),
+ ]},
+
+/* ---------- 第三场 / Scene 3 ---------- */
+{no:{zh:'第三场',en:'Scene 3'},
+ title:{zh:'一首歌，不必全员战备',en:'One Song, No Alarm'},
+ full:{zh:'一首歌不必触发全员战备',en:`One song doesn't need an all-hands alert`},
+ sub:{zh:'允许想他',en:'Allowed to miss him'},
+ note:{zh:`第三场：会开到一半，外面传来一首熟悉的歌。看看这一次，杏仁核的手悬在警报按钮上时，做了什么。点 <b>开始</b>。`,
+       en:`Scene 3: midway through the meeting, a familiar song drifts in from outside. Watch what the Amygdala does this time, with its hand hovering over the alarm. Press <b>Start</b>.`},
+ beats:[
+  D(`会议中途，外面传来一首熟悉的歌。姗姗安静下来。海马体手里的文件停在半空。`,`Midway through the meeting, a familiar song drifts in from outside. Shanshan goes quiet. The file in the Hippocampus's hands stops in mid-air.`),
+  S('shan',`我又想起他了。`,`I'm thinking about him again.`),
+  S('amyg',`紧急——`,`Emergen—`,`猛地起身`,`leaping to its feet`),
+  D(`它停了一下，手悬在警报按钮上。`,`It pauses, hand hovering over the alarm button.`),
+  S('amyg',`……先问问？`,`…Ask first?`),
+  S('ceo',`嗯。\n你想起了什么？`,`Mm.\nWhat came back to you?`),
+  S('shan',`一些很普通的日子。\n还有那种，以为以后会成为家人的感觉。`,`Some very ordinary days.\nAnd that feeling of believing we'd become family one day.`),
+  S('hippo',`这份是过去。\n时间标签在这里。`,`This one's from the past.\nThe timestamp is right here.`,`轻轻放下纸`,`gently setting the papers down`),
+  S('dmn',`那是不是说明她其实还——`,`So does that mean she actually still—`),
+  S('ceo',`别急着续写。`,`Don't rush to write the sequel.`),
+  S('shan',`我现在想的，就是这段回忆。\n我允许自己想他，也允许自己触景生情、难过。\n每次这样的时候，不必都弄得像发生了什么大事。`,`What I'm thinking about right now is just this memory.\nI'm allowing myself to miss him — and to be moved when something brings it back, and to be sad.\nEvery time that happens, it doesn't have to become a major incident.`),
+  S('amyg',`你哭的话呢？`,`And if you cry?`),
+  S('shan',`你可以给我递纸。`,`You can hand me a tissue.`),
+  S('amyg',`然后呢？`,`And then?`),
+  S('shan',`先不用然后。`,`No "and then" for now.`),
+  D(`杏仁核把应急预案放下，拿来纸巾。`,`The Amygdala puts down the emergency plan and brings over the tissues.`),
+  S('acc',`今天不统计“想起他的次数”。`,`Today we are not counting "number of times she thought of him."`,`把记录本上的一栏划掉`,`crossing out a column in the logbook`),
+  S('hippo',`那我也不用每次带旧东西过来，都偷偷摸摸的了？`,`So I don't have to sneak around every time I bring in something old?`),
+  S('shan',`不用。\n轻一点就好。`,`You don't.\nJust be gentle with it.`),
+  N(`她给思念留了位置，也给今天留了位置。\n眼泪落下时，有纸巾，有一把椅子；等她愿意起身，再继续自己的事情。\n她不用一边难过，一边追问自己为什么还没好。`,
+    `She made room for missing him, and made room for today, too.\nWhen the tears come, there are tissues and a chair; when she's ready to stand up, she carries on with her own things.\nShe doesn't have to be sad and, at the same time, keep interrogating herself about why she isn't over it yet.`),
+ ]},
+
+/* ---------- 第四场 / Scene 4 ---------- */
+{no:{zh:'第四场',en:'Scene 4'},
+ title:{zh:'同一条船上',en:'In the Same Boat'},
+ full:{zh:'谁一直和我坐在这条船上？',en:`Who's been in this boat with me all along?`},
+ sub:{zh:'还有小姗姗',en:'Little Shanshan, too'},
+ note:{zh:`第四场：“我和我自己，同舟共济。”——还有一位很少出场的成员，要从角落里探出头来。点 <b>开始</b>。`,
+       en:`Scene 4: "Me and myself, in the same boat." And a member who rarely makes an appearance is about to peek out from the corner. Press <b>Start</b>.`},
+ beats:[
+  D(`会议室安静下来。姗姗看着自己的手。`,`The boardroom goes quiet. Shanshan looks down at her hands.`),
+  S('shan',`我昨天说，我和我自己，才是真正的同甘共苦、同生共死、同舟共济。`,`Yesterday I said: it's me and myself who truly go through thick and thin together, who'd live and die together, who row the same boat.`),
+  S('hippo',`这里还有很多记录。\n你害怕过，又去做了。\n你失望过，又一点点收拾了。\n博士论文交出去的时候，你也在这里。`,`There's a lot more on record here.\nYou were scared, and you did it anyway.\nYou were let down, and you picked up the pieces bit by bit.\nWhen your PhD thesis went in, you were right here, too.`,`翻开另一本档案`,`opening another file`),
+  S('shan',`这一次，我也想更坚定地站在自己这边。`,`This time, I want to stand even more firmly on my own side.`),
+  S('chacha',`这可以和被朋友支持、被人陪伴一起发生。\n你不用独自完成每一件事。`,`That can happen alongside being supported by friends and having people around you.\nYou don't have to do every single thing alone.`),
+  D(`角落里，那个会撒娇的小姗姗探出头。`,`In the corner, Little Shanshan — the one who likes to be fussed over — pokes her head out.`,{reveal:true}),
+  S('little',`那我怎么办？\n大家都在说，我们要做一个坚强勇敢的大女孩。`,`What about me?\nEveryone keeps saying we have to be a strong, brave big girl.`),
+  S('shan',`你也一起。`,`You're coming too.`,`蹲下来`,`crouching down`),
+  S('little',`我有时候只想有人抱抱。\n我不想一直懂事。`,`Sometimes I just want someone to hug me.\nI don't want to always be the good, sensible one.`),
+  S('shan',`可以。\n大女孩负责带着你往前走，你不用负责一直表现得很好。`,`That's okay.\nThe big girl's job is to take you forward. It isn't your job to be on your best behaviour all the time.`),
+  S('ceo',`我们可以安排事情，也可以联系朋友，找人聊聊。\n需要陪伴的时候，照实说。`,`We can plan things, and we can also reach out to friends, find someone to talk to.\nWhen you need company, just say so.`),
+  S('little',`所以“靠自己”，也可以找人帮忙？`,`So "relying on yourself" can include asking people for help?`),
+  S('shan',`当然。\n我会替我们找支持，也会在难过的时候，尽量不再凶你。`,`Of course.\nI'll find support for us. And when things are hard, I'll try not to be harsh with you anymore.`),
+  D(`小姗姗挪近一点，把手放进她手里。`,`Little Shanshan shuffles a little closer and puts her hand in Shanshan's.`),
+  S('acc',`董事长和小姗姗，享有同样的休息权。`,`The Chairman and Little Shanshan are entitled to the same right to rest.`,`悄悄加上一条`,`quietly adding a clause`),
+  N(`她说“我会陪着我”，其中也包括那个害怕、孤独、想被抱一抱的自己。\n坚强没有把这些需要赶出去。\n它开始学着替她们找地方坐，找人说话，然后一起往前走。`,
+    `When she says "I'll be there for me," that includes the self who is scared, lonely, and wants to be held.\nBeing strong didn't drive those needs away.\nIt's learning to find them a place to sit and someone to talk to — and then to move forward together.`),
+ ]},
+
+/* ---------- 第五场 / Scene 5 ---------- */
+{no:{zh:'第五场',en:'Scene 5'},
+ title:{zh:'收回的喜欢',en:'Love, Coming Home'},
+ full:{zh:'收回的喜欢，不必一夜到账',en:`Love you take back doesn't have to clear overnight`},
+ sub:{zh:'樱花树下',en:'Under the cherry tree'},
+ note:{zh:`第五场：一张旧便签自己滑了出来——“好想告诉他”。放出去的喜欢，要怎么收回来？点 <b>开始</b>。`,
+       en:`Scene 5: an old sticky note slides out on its own — "I really want to tell him." How do you take back love you've already given out? Press <b>Start</b>.`},
+ beats:[
+  D(`海马体的桌上，一张便签自动滑了出来：“今天发生了这件事，好想告诉他。”`,`On the Hippocampus's desk, a sticky note slides out by itself: "This happened today. I really want to tell him."`),
+  S('hippo',`旧习惯。\n以前遇到事情，经常往这个方向找人。`,`Old habit.\nWhenever something happened, this was the direction we used to turn.`,`有点不好意思`,`a little embarrassed`),
+  S('amyg',`要不要把所有出口都封死？`,`Should we seal off every exit?`),
+  S('shan',`先别。\n我知道，收回放出去的喜欢、关心和思念，不是很容易的事。`,`Not yet.\nI know it isn't easy to take back the affection, care and longing you've sent out.`),
+  S('ceo',`刚才想到要分享，这个念头可以先放在这里。\n今天愿意告诉谁、怎么安排，由你慢慢选。`,`That urge to share just now — it can rest here for the moment.\nWho you'd like to tell today, and how — you can take your time choosing.`),
+  S('shan',`可能想告诉朋友。\n也可能先记下来，留给自己看。`,`Maybe I'll tell a friend.\nOr maybe I'll just write it down, for me to read.`),
+  S('dmn',`可那些热烈的喜欢，真的还能回来吗？`,`But all that ardent love — can it really come back?`,`望着旧便签`,`gazing at the old note`),
+  S('shan',`我想起了自己说的那句话。\n<b>“樱花树下站谁都美，而我的爱给谁都是热烈的。”</b>`,`I remember something I once said.\n<b>"Anyone standing under a cherry tree looks beautiful — and my love burns bright for whoever it's given to."</b>`),
+  D(`DMN 没有接话，慢慢把投影换成一棵樱花树。`,`The DMN doesn't reply. Slowly, it changes the projection to a cherry tree in bloom.`),
+  S('hippo',`原来档案里，也一直有你。\n你怎样认真地喜欢，怎样关心，怎样愿意一起过日子。`,`Turns out you've been in the archive all along.\nHow wholeheartedly you love, how you care, how willing you are to build a life with someone.`),
+  S('shan',`嗯。\n结束了一段关系，这些能力还是我的。\n它们可以先用来照顾我，也留给朋友、家人，留给我想做的事情。`,`Mm.\nA relationship ended, but these abilities are still mine.\nThey can go to taking care of me first — and to my friends, my family, and the things I want to do.`),
+  S('dmn',`树下空出来的位置，下一幕要安排谁？`,`The empty spot under the tree — who are we casting there in the next act?`),
+  S('shan',`先让我站一会儿吧。`,`Let me stand there for a while first.`),
+  D(`她走进画面，站到树下。风吹过来，她抬起头。`,`She steps into the picture and stands beneath the tree. A breeze blows through; she lifts her head.`),
+  S('shan',`我还想认识一下，没有在照顾一段关系的时候，我自己是什么样。`,`I'd also like to get to know who I am when I'm not busy looking after a relationship.`),
+  S('ceo',`那就给这个认识过程留些时间。`,`Then let's set aside some time for getting to know her.`),
+  N(`她仍然会舍不得，也愿意相信自己能够往前走。\n那份热烈没有因为关系结束就失去去处。\n今天，它可以先落在一顿认真吃的饭、一件想做的事，和一次对自己温和的回答里。`,
+    `She still finds it hard to let go, and she's willing to believe she can move forward.\nThat ardour didn't lose its home just because the relationship ended.\nToday, it can land first in a meal eaten properly, a thing she wants to do, and one gentle answer given to herself.`),
+ ]},
+
+/* ---------- 第六场 / Scene 6 ---------- */
+{no:{zh:'第六场',en:'Scene 6'},
+ title:{zh:'七年的账本',en:'The Seven-Year Ledger'},
+ full:{zh:'七年的账本，可以合上',en:'The seven-year ledger can be closed'},
+ sub:{zh:'认下，合上',en:'Own it, close it'},
+ note:{zh:`第六场：ACC 搬来了最厚的那本账——七年。看董事长最后写下什么结案意见。点 <b>开始</b>。`,
+       en:`Scene 6: the ACC brings in the thickest ledger of all — seven years. Watch what the Chairman finally writes as the closing statement. Press <b>Start</b>.`},
+ beats:[
+  D(`ACC 把最厚的账本搬到桌上。桌面“咚”地一声。`,`The ACC heaves the thickest ledger onto the table. It lands with a heavy thud.`),
+  S('acc',`还有最后一个长期未结项目。\n谁付出得更多。\n哪句话到底什么意思。\n哪一次应该早些看清。\n如果当时换一种做法——`,`One last long-outstanding item.\nWho gave more.\nWhat that one sentence really meant.\nWhich time we should have seen it sooner.\nIf we'd done things differently back then—`),
+  S('dmn',`我有四十六个平行结局。`,`I have forty-six alternate endings.`),
+  S('hippo',`我还有一些不完整的片段，可能永远拼不齐。`,`And I have some incomplete fragments that may never fit together.`),
+  S('shan',`我以前很想把它算明白。\n好像只有算清楚，才知道这些年到底值不值得。`,`I used to really want to work it all out.\nAs if only by balancing the books could I know whether these years were worth it.`,`摸了摸账本`,`touching the ledger`),
+  S('acc',`那现在呢？`,`And now?`),
+  S('shan',`我不想再计较曾经爱里的得失。\n过去了，无论好坏，我都认下了。`,`I don't want to keep tallying the gains and losses of the love I had.\nIt's in the past. Good or bad, I own all of it.`),
+  S('amyg',`认下了，会不会让受过的委屈也被一笔带过？`,`If you own it, won't the hurt you went through just get written off in a single line?`),
+  S('shan',`不会。\n好的时候确实好过，受伤的时候也确实疼过。\n我不用把它们改成另一种样子。`,`No.\nThe good times really were good, and the times I got hurt really did hurt.\nI don't have to rewrite either of them into something else.`),
+  S('ceo',`有些问题，也可能暂时没有答案。`,`And some questions may not have answers — at least for now.`),
+  S('shan',`嗯。\n我想把今天留出来。\n以后再想起什么，也不必每次都重新审完七年。`,`Mm.\nI want to keep today free.\nAnd whatever comes back to me later, I don't have to re-audit all seven years every time.`),
+  S('acc',`那结案意见写什么？`,`Then what goes in the closing statement?`),
+  D(`姗姗想了一会儿。`,`Shanshan thinks for a while.`),
+  S('shan',`写：\n我认真爱过，也确实受过伤。\n我会带走学到的东西，继续过我的生活。`,`Write:\nI loved sincerely, and I truly was hurt.\nI'll take what I've learned with me, and go on living my life.`),
+  S('dmn',`没有“他终将后悔”的最终判词？`,`No final verdict of "he'll regret it in the end"?`),
+  S('shan',`那一页，先让它空着吧。`,`Let's leave that page blank for now.`,`轻轻笑了一下`,`with a small laugh`),
+  D(`ACC 合上账本。没有销毁，没有粉饰。它被放到书架上。桌面空出了一块地方。`,`The ACC closes the ledger. Not destroyed, not whitewashed. It goes onto the bookshelf. A space opens up on the table.`),
+  N(`她允许过去同时有过快乐和疼痛，也允许一些问题还没有答案。\n合上账本以后，今天多了一点可以使用的时间。\n她可以拿它学点东西，也可以什么都不证明，去过一个普通的下午。`,
+    `She lets the past hold both joy and pain, and lets some questions stay unanswered.\nWith the ledger closed, today has a little more time to spend.\nShe can use it to learn something — or prove nothing at all, and go have an ordinary afternoon.`),
+ ]},
+
+/* ---------- 尾声 / Epilogue ---------- */
+{no:{zh:'尾声',en:'Epilogue'},
+ title:{zh:'新生活',en:'A New Life'},
+ full:{zh:'新生活还没有标准答案',en:'The new life has no answer key yet'},
+ sub:{zh:'去试试旺自己',en:'Go be my own lucky charm'},
+ note:{zh:`尾声：第二天，一张空白的日程表。新生活还没有标准答案。点 <b>开始</b>。`,
+       en:`Epilogue: the next day, and a blank schedule. The new life doesn't come with an answer key yet. Press <b>Start</b>.`},
+ beats:[
+  D(`第二天。一张空白的日程表。姗姗站在桌边，先看了看窗外。`,`The next day. A blank schedule. Shanshan stands by the desk and looks out of the window first.`),
+  S('shan',`我真的有很多期待。\n我想看看自己的潜力在哪里，单身的日子会是什么样。\n为自己活有多爽，也会不会有苦涩。`,`I really do have so much to look forward to.\nI want to see where my potential lies, and what single life is like.\nHow good it feels to live for myself — and whether there'll be some bitterness, too.`),
+  S('dmn',`也许有一天，你可以按自己的心意选择城市和工作。\n也许有一个下午，没有人等你解释行程，你想往哪边走，就往哪边走。`,`Maybe one day you'll choose a city and a job purely by what your heart wants.\nMaybe there'll be an afternoon when nobody's waiting for you to explain your plans, and you just walk whichever way you like.`,`慢慢展开一张新画`,`slowly unrolling a new painting`),
+  S('hippo',`也许吃到一样喜欢的东西，还是会下意识想到他。`,`Maybe when you eat something you love, you'll still think of him without meaning to.`),
+  S('amyg',`也许某个晚上，真的会觉得孤独。`,`Maybe some night, you really will feel lonely.`),
+  S('shan',`嗯。\n这些我都想慢慢经历。\n我不用今天就决定，单身到底是幸福还是苦涩。`,`Mm.\nI want to live through all of it, slowly.\nI don't have to decide today whether being single is happiness or bitterness.`),
+  S('ceo',`今天想先做什么？`,`What would you like to do first today?`),
+  S('shan',`学一会儿我想学的东西。\n给自己做顿喜欢的饭。\n如果有心情，再出去走走。`,`Spend a while learning something I want to learn.\nCook myself a meal I love.\nAnd if I'm in the mood, go out for a walk.`),
+  S('little',`如果走着走着，我又难过了呢？`,`What if I get sad again halfway through the walk?`),
+  S('shan',`我们就停一会儿。`,`Then we'll stop for a bit.`),
+  S('acc',`那“每天必须比昨天好”这一项，我删了。`,`Then I'm deleting the line item "Every day must be better than yesterday."`,`关掉一个旧表格`,`closing an old spreadsheet`),
+  S('dmn',`剧名也换吗？\n《前任后悔的那一天》不要了？`,`Are we changing the title too?\nNo more "The Day the Ex Regretted It"?`),
+  S('shan',`换。\n叫《关于失恋这件事》。`,`We're changing it.\nIt's called "About the Breakup."`),
+  S('dmn',`主角是谁？`,`And who's the lead?`),
+  S('shan',`我。`,`Me.`,`牵起小姗姗的手`,`taking Little Shanshan's hand`),
+  D(`海马体在新页上写下日期。前额叶收好今天的安排。杏仁核带上纸巾，把警报器留在桌上。`,`The Hippocampus writes the date on a fresh page. The Prefrontal Cortex tucks away today's plan. The Amygdala packs the tissues and leaves the alarm behind on the desk.`),
+  S('shan',`我今天可能还是会想他。`,`I might still miss him today.`),
+  S('ceo',`嗯。`,`Mm.`),
+  S('shan',`但我也开始想知道，我接下来会过上什么样的生活。`,`But I'm also starting to wonder what kind of life I'm going to have next.`),
+  D(`门打开。外面只是一个普通的早晨。`,`The door opens. Outside, it's just an ordinary morning.`),
+  S('little',`那我们去看看？`,`So shall we go and see?`),
+  S('shan',`走。\n去试试旺自己。`,`Let's go.\nLet's go try being my own lucky charm.`),
+  D(`灯暗。故事仍在继续。`,`Lights down. The story goes on.`),
+  {s:'end',zh:'第七幕 完',en:'End of Act 7'},
+ ]},
+];
+const LITTLE_SCENE=BREAKUP.findIndex(s=>s.beats.some(b=>b.reveal));   // 第四场 / Scene 4
+const LITTLE_AT=BREAKUP[LITTLE_SCENE].beats.findIndex(b=>b.reveal);
+
 /* ---------- State ---------- */
-let lang='en', act=0, idx=-1;
+let lang='en', cut='main', act=0, idx=-1;
+const units=()=>cut==='main'?ACTS:BREAKUP;
+const beats=()=>cut==='main'?ACTS[act]:BREAKUP[act].beats;
+const cards=()=>cut==='main'?ACT_CARD:BREAKUP;
+const tr=v=>typeof v==='string'?v:v[lang];
+const reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* render cast seats once */
 const castEl=document.getElementById('cast');
 CAST.forEach(c=>{
   const s=document.createElement('div');
-  s.className='seat'+(c.id==='shan'?' shan':''); s.id='seat-'+c.id;
+  s.className='seat'+(c.id==='shan'?' shan':'')+(c.id==='little'?' little':''); s.id='seat-'+c.id;
   s.onclick=()=>jumpTo(c.id);
   const crown = c.id==='shan' ? '<span class="crown">👑</span>' : '';
   s.innerHTML=`${crown}<span class="speechdot"></span><div class="av ${c.id}">${ICON[c.id]}</div>
@@ -957,13 +1384,26 @@ const bar=document.getElementById('bar');
 const counter=document.getElementById('counter');
 const nextBtn=document.getElementById('nextBtn');
 const nextLabel=document.getElementById('nextLabel');
+const allBtn=document.getElementById('allBtn');
 
 function fmt(text){
   return text
     .replace('{stamp}',`<span class="stamp">${lang==='en'?'Still zero.':'还是零。'}</span>`)
     .replace('{tears}',`<span class="teardrop">🥹 🥹 🥹 🥹</span>`);
 }
+function setQuote(html){
+  if(quote.dataset.k===html) return;
+  quote.dataset.k=html;
+  quote.style.animation='none'; void quote.offsetWidth; quote.style.animation='';
+  quote.innerHTML=html;
+}
+function setActiveSeat(id){
+  document.querySelectorAll('.seat').forEach(s=>s.classList.remove('active'));
+  const seat=id&&document.getElementById('seat-'+id);
+  if(seat) seat.classList.add('active');
+}
 
+/* ----- main season: one line per step ----- */
 function renderLine(item){
   const sp=item.speaker;
   let head='';
@@ -989,30 +1429,111 @@ function renderLine(item){
       </div>
       <div class="line">${fmt(item[lang])}</div>
     </div>`;
-  // narrator
-  quote.style.animation='none'; void quote.offsetWidth; quote.style.animation='';
-  quote.innerHTML = item.chacha[lang];
-  // active seat
-  document.querySelectorAll('.seat').forEach(s=>s.classList.remove('active'));
-  const seat=document.getElementById('seat-'+sp);
-  if(seat) seat.classList.add('active');
+  setQuote(item.chacha[lang]);
+  setActiveSeat(sp);
+}
+
+/* ----- breakup cut: the scene builds up like a page of a play ----- */
+const nl=t=>t.replace(/\n/g,'<br>');
+function brBeat(b,fresh){
+  const f=fresh?' fresh':'';
+  if(b.s==='dir') return `<div class="sdir${f}">${nl(b[lang])}</div>`;
+  if(b.s==='end') return `<div class="send${f}">${b[lang]}</div>`;
+  if(b.s==='narr') return `<div class="snarr${f}"><div class="snarr-h"><span class="badge chacha">${ICON.chacha}</span>${lang==='en'?'Chacha, narrating':'查查旁白'}</div><div class="snarr-t">${nl(b[lang])}</div></div>`;
+  const me=(b.s==='shan'||b.s==='little')?' me':'';
+  const note=b.note?`<span class="snote">${lang==='en'?'('+b.note.en+')':'（'+b.note.zh+'）'}</span>`:'';
+  return `<div class="sline ${b.s}${me}${f}"><div class="swho2"><span class="badge ${b.s}">${ICON[b.s]}</span><span class="sname">${BR_NAME[b.s][lang]}</span>${note}</div><div class="stxt">${nl(b[lang])}</div></div>`;
+}
+function brTitleCard(fresh){
+  const sc=BREAKUP[act];
+  let h=`<div class="tcard${fresh?' fresh':''}">
+    <div class="tcard-eye">shanshan Brain Inc. · ${lang==='en'?'Act 7 · About the Breakup':'第七幕 · 失恋那件事'}</div>
+    <div class="tcard-no">${sc.no[lang]}</div>
+    <div class="tcard-title">${sc.full[lang]}</div>`;
+  if(act===0){
+    h+=`<div class="tcard-theme"><span class="k">${lang==='en'?'Theme of this act':'本幕主题'}</span>${BR_THEME[lang]}</div>
+      <div class="tcard-cast-h">${lang==='en'?'Cast':'演员表'}</div>
+      <ul class="tcard-cast">${BR_CASTLIST.map(c=>`<li><span class="badge ${c.id}">${ICON[c.id]}</span><div><span class="tc-name">${c.name[lang]}</span><span class="tc-desc">${c.desc[lang]}</span></div></li>`).join('')}</ul>
+      <div class="tcard-foot">${lang==='en'?'The brain regions take the stage, as before, as literary personifications.':'脑区继续以文学拟人的角色登场。'}</div>`;
+  }
+  return h+`</div>`;
+}
+function sceneEndNote(){
+  const nxt=BREAKUP[act+1];
+  if(!nxt) return lang==='en'
+    ? `That's Act 7. The story goes on. Press <b>Restart</b> to watch it again, or pick any scene above.`
+    : `第七幕到这里。故事仍在继续。点 <b>重播</b> 再看一遍，或者点上方任意一场。`;
+  return lang==='en'
+    ? `End of this scene. Next: <b>${nxt.no.en} · ${nxt.full.en}</b>. Press <b>Next scene</b>, or ↓.`
+    : `这一场到这里。下一场：<b>${nxt.no.zh} · ${nxt.full.zh}</b>。点 <b>下一场</b>，或按 ↓。`;
+}
+function updateLittle(){
+  const show = cut==='breakup' && (act>LITTLE_SCENE || (act===LITTLE_SCENE && idx>=LITTLE_AT));
+  document.getElementById('seat-little').classList.toggle('show',show);
+}
+function brSide(){
+  const sc=BREAKUP[act], b=sc.beats[idx];
+  setActiveSeat(b && b.s in BR_NAME && b.s!=='chacha' ? b.s : null);
+  updateLittle();
+  setQuote(idx>=sc.beats.length-1 ? sceneEndNote() : sc.note[lang]);
+}
+function brRender(){
+  const sc=BREAKUP[act];
+  let h=brTitleCard(idx<0);
+  for(let i=0;i<=idx;i++) h+=brBeat(sc.beats[i], i===idx);
+  box.innerHTML=h;
+  box.classList.toggle('capped', idx>=0);
+  box.scrollTop = idx<0 ? 0 : box.scrollHeight;
+  brSide();
+}
+function brAppend(){
+  box.classList.add('capped');
+  box.insertAdjacentHTML('beforeend', brBeat(BREAKUP[act].beats[idx], true));
+  box.scrollTo({top:box.scrollHeight, behavior:reduceMotion?'auto':'smooth'});
+  brSide();
+}
+
+function renderCurrent(){
+  box.classList.remove('capped');
+  if(cut==='breakup'){ brRender(); return; }
+  if(idx>=0) renderLine(ACTS[act][idx]);
+  else { box.innerHTML=''; setQuote(defaultQuote()); setActiveSeat(null); }
+  updateLittle();
 }
 
 function updateUI(){
-  const total=ACTS[act].length;
+  const total=beats().length, last=units().length-1, atEnd=idx>=total-1;
   counter.textContent=`${Math.max(idx+1,0)} / ${total}`;
   bar.style.width=((idx+1)/total*100)+'%';
-  nextBtn.disabled = idx>=total-1;
-  nextLabel.textContent = idx<0
-    ? (lang==='en'?'Start':'开始')
-    : (lang==='en'?'Next':'下一步');
+  const nextUnit = cut==='main' ? (lang==='en'?'Next act':'下一幕') : (lang==='en'?'Next scene':'下一场');
+  if(idx<0) nextLabel.textContent = lang==='en'?'Start':'开始';
+  else if(!atEnd) nextLabel.textContent = lang==='en'?'Next':'下一步';
+  else nextLabel.textContent = act<last ? nextUnit : (lang==='en'?'The end':'完');
+  nextBtn.disabled = atEnd && act>=last;
+  allBtn.disabled = atEnd;
 }
 
-function next(){ if(idx>=ACTS[act].length-1)return; idx++; renderLine(ACTS[act][idx]); updateUI(); }
-function restart(){ idx=-1; box.innerHTML=''; quote.innerHTML=defaultQuote(); nextBtn.disabled=false; document.querySelectorAll('.seat').forEach(s=>s.classList.remove('active')); updateUI(); }
-function jumpTo(id){ const arr=ACTS[act]; for(let i=0;i<arr.length;i++){ if(arr[i].speaker===id){ idx=i; renderLine(arr[i]); updateUI(); return; } } }
+function next(){
+  const total=beats().length;
+  if(idx<total-1){
+    idx++;
+    if(cut==='breakup') brAppend(); else renderLine(ACTS[act][idx]);
+    updateUI();
+  } else if(act<units().length-1){
+    goAct(act+1);
+  }
+}
+function showAll(){ idx=beats().length-1; renderCurrent(); updateUI(); }
+function restart(){ idx=-1; renderCurrent(); updateUI(); }
+function jumpTo(id){
+  const arr=beats();
+  for(let i=0;i<arr.length;i++){
+    if((arr[i].speaker||arr[i].s)===id){ idx=i; renderCurrent(); updateUI(); return; }
+  }
+}
 
 function defaultQuote(){
+  if(cut==='breakup') return BREAKUP[act].note[lang];
   if(act===1){
     return lang==='en'
       ? `Act 2, Chairman: one boring-but-important task keeps losing to shinier ideas. Watch why — it's reward math, not weak will. Press <b>Start</b>.`
@@ -1043,117 +1564,135 @@ function defaultQuote(){
     : `嗨，我是 Chacha——董事会观察员。点 <b>开始</b>，我把向你汇报的每个部门介绍一遍：他们是谁、负责什么。`;
 }
 
-const VISIBLE=3;           // cards shown at once
-let winStart=0;            // leftmost visible act index
+/* ----- act / scene carousel ----- */
+const VISIBLE=3;
+let winStart=0;
 
 function buildTrack(){
   const track=document.getElementById('acttrack');
   track.innerHTML='';
-  ACT_CARD.forEach((c,i)=>{
+  cards().forEach((c,i)=>{
     const card=document.createElement('button');
     card.className='actcard'+(i===act?' on':'');
     card.id='actcard-'+i;
     card.onclick=()=>goAct(i);
-    card.innerHTML=`<span class="actcard-no">${c.no}</span>
-      <span class="actcard-title">${c.title[lang]}</span>
-      <small class="actcard-sub">${c.sub[lang]}</small>`;
+    card.innerHTML=`<span class="actcard-no">${tr(c.no)}</span>
+      <span class="actcard-title">${tr(c.title)}</span>
+      <small class="actcard-sub">${tr(c.sub)}</small>`;
     track.appendChild(card);
   });
   positionWindow();
 }
-
 function positionWindow(){
-  const maxStart=Math.max(0,ACTS.length-VISIBLE);
+  const maxStart=Math.max(0,units().length-VISIBLE);
   if(winStart>maxStart) winStart=maxStart;
   if(winStart<0) winStart=0;
-  const track=document.getElementById('acttrack');
-  // each card is 1/3 of window width + 8px gap; shift by winStart cards
-  track.style.transform=`translateX(calc(-${winStart} * (100% + 8px) / 3))`;
+  document.getElementById('acttrack').style.transform=`translateX(calc(-${winStart} * (100% + 8px) / 3))`;
   document.getElementById('prevAct').disabled = winStart===0;
   document.getElementById('nextAct').disabled = winStart>=maxStart;
 }
-
 function slideWindow(dir){
-  const maxStart=Math.max(0,ACTS.length-VISIBLE);
+  const maxStart=Math.max(0,units().length-VISIBLE);
   winStart=Math.min(maxStart,Math.max(0,winStart+dir));
   positionWindow();
 }
-
 function refreshCards(){
-  ACT_CARD.forEach((c,i)=>{
+  cards().forEach((c,i)=>{
     const card=document.getElementById('actcard-'+i);
-    if(!card)return;
+    if(!card) return;
     card.classList.toggle('on',i===act);
-    card.querySelector('.actcard-title').textContent=c.title[lang];
-    card.querySelector('.actcard-sub').textContent=c.sub[lang];
+    card.querySelector('.actcard-no').textContent=tr(c.no);
+    card.querySelector('.actcard-title').textContent=tr(c.title);
+    card.querySelector('.actcard-sub').textContent=tr(c.sub);
   });
 }
-
 function ensureVisible(){
-  // scroll the 3-card window so the active act is inside it
-  const maxStart=Math.max(0,ACTS.length-VISIBLE);
+  const maxStart=Math.max(0,units().length-VISIBLE);
   if(act<winStart) winStart=act;
   else if(act>winStart+VISIBLE-1) winStart=Math.min(maxStart,act-VISIBLE+1);
   positionWindow();
 }
-
-function goAct(a){
-  act=a; idx=-1;
-  document.body.classList.toggle('shan-awake', act>=4);
-  refreshCards();
-  ensureVisible();
-  renderDots();
-  document.getElementById('scenetag').textContent=ACT_TAG[a][lang];
-  document.getElementById('subtitle').textContent=SUBTITLE[a][lang];
-  box.innerHTML=''; quote.innerHTML=defaultQuote();
-  document.querySelectorAll('.seat').forEach(s=>s.classList.remove('active'));
-  nextBtn.disabled=false;
-  updateUI();
-}
-
 function renderDots(){
   const wrap=document.getElementById('dots');
   wrap.innerHTML='';
-  ACTS.forEach((_,i)=>{
+  units().forEach((_,i)=>{
     const d=document.createElement('button');
     d.className='dot'+(i===act?' on':'');
-    d.setAttribute('aria-label','act '+(i+1));
+    d.setAttribute('aria-label',(cut==='main'?'act ':'scene ')+(i+1));
     d.onclick=()=>goAct(i);
     wrap.appendChild(d);
   });
 }
 
+const EYEBROW={main:{en:'Five departments · one Chairman',zh:'五个部门 · 一位董事长'},
+               breakup:{en:'Act 7 · a cut of its own',zh:'第七幕 · 独立篇章'}};
+function setHeads(){
+  const sc=BREAKUP[act];
+  document.getElementById('scenetag').textContent = cut==='main' ? ACT_TAG[act][lang] : `${sc.no[lang]} · ${sc.full[lang]}`;
+  document.getElementById('subtitle').textContent = cut==='main' ? SUBTITLE[act][lang] : BR_SUB[lang];
+  const eb=document.getElementById('eyebrow');
+  eb.setAttribute('data-en',EYEBROW[cut].en); eb.setAttribute('data-zh',EYEBROW[cut].zh);
+  eb.textContent=EYEBROW[cut][lang];
+}
+
+function goAct(a){
+  act=a; idx=-1;
+  document.body.classList.toggle('shan-awake', cut==='breakup' || act>=4);
+  refreshCards();
+  ensureVisible();
+  renderDots();
+  setHeads();
+  renderCurrent();
+  updateUI();
+}
+
+function setCut(c,fromInit){
+  cut=c; winStart=0;
+  document.body.classList.toggle('cut-breakup', c==='breakup');
+  ['main','breakup'].forEach(k=>{
+    const b=document.getElementById('cut-'+k);
+    b.classList.toggle('on',k===c);
+    b.setAttribute('aria-selected',k===c?'true':'false');
+  });
+  act=0; buildTrack();
+  goAct(0);
+  if(!fromInit){
+    try{ history.replaceState(null,'', c==='breakup' ? '#breakup' : location.pathname+location.search); }catch(e){}
+  }
+}
+
 function setLang(l){
   lang=l;
   document.body.classList.toggle('zh',l==='zh');
+  document.documentElement.lang = l==='zh'?'zh-CN':'en';
   document.getElementById('enBtn').classList.toggle('on',l==='en');
   document.getElementById('zhBtn').classList.toggle('on',l==='zh');
+  setHeads();
   document.querySelectorAll('[data-en]').forEach(el=>{ if(el.hasAttribute('data-zh')) el.textContent=el.getAttribute('data-'+l); });
   CAST.forEach(c=>{
     document.querySelector(`[data-role="${c.id}"]`).textContent=c.role[l];
     document.querySelector(`[data-org="${c.id}"]`).textContent=c.org[l];
   });
   refreshCards();
-  document.getElementById('scenetag').textContent=ACT_TAG[act][l];
-  document.getElementById('subtitle').textContent=SUBTITLE[act][l];
-  if(idx>=0) renderLine(ACTS[act][idx]); else quote.innerHTML=defaultQuote();
+  renderCurrent();
   updateUI();
 }
 
 document.addEventListener('keydown',e=>{
+  if(e.target && (e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')) return;
   if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();next();}
   else if(e.key==='ArrowLeft'){e.preventDefault();restart();}
   else if(e.key==='ArrowUp'){e.preventDefault(); if(act>0) goAct(act-1);}
-  else if(e.key==='ArrowDown'){e.preventDefault(); if(act<ACTS.length-1) goAct(act+1);}
+  else if(e.key==='ArrowDown'){e.preventDefault(); if(act<units().length-1) goAct(act+1);}
+});
+window.addEventListener('hashchange',()=>{
+  const want=/^#(breakup|act7|shilian)$/i.test(location.hash)?'breakup':'main';
+  if(want!==cut) setCut(want,true);
 });
 
-/* init */
-buildTrack();
-renderDots();
-document.getElementById('scenetag').textContent=ACT_TAG[0][lang];
-document.getElementById('subtitle').textContent=SUBTITLE[0][lang];
-quote.innerHTML=defaultQuote();
-updateUI();
+/* init — open straight into the breakup cut with  …/your-page.html#breakup */
+setCut(/^#(breakup|act7|shilian)$/i.test(location.hash)?'breakup':'main', true);
+
 </script>
 
 </body>
